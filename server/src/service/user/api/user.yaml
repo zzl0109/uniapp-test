@@ -1,0 +1,13 @@
+type: google.api.service
+config_version: 3
+
+http:
+    rules:
+        - selector: user.v1.UserService.CreateUser
+          post: /v1/user
+          body: '*'
+        - selector: user.v1.UserService.Login
+          post: /v1/user/login
+          body: '*'
+        - selector: user.v1.UserService.GetUser
+          get: /v1/user/{id}

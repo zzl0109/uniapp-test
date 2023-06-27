@@ -1,4 +1,5 @@
 {
+	"extends": ["@vue/tsconfig/tsconfig.json"],
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
@@ -17,7 +18,8 @@
 			"dom"
 		],
 		"types": [
-			"@dcloudio/types"
+			"@dcloudio/types",
+			"./types.d.ts"
 		]
 	},
 	"exclude": [

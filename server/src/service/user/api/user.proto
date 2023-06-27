@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package="qiji/src/service/user/api/gen/v1;userpb";
+
+enum Gender {
+    gender_not_specified = 0;
+    male = 1;
+    female = 2;
+}
+
+message UserEntity {
+    int32 id = 1;
+    User user = 2;
+}
+
+message User {
+    string name = 1;
+    Gender gender = 2;
+    string token = 3;
+}
+
+message CreateUserService {
+    message Request {
+        User user = 1;
+    }
+}
+
+message GetUserService {
+    message Request {
+        int32 id = 1;
+    }
+}
+
+message LoginService {
+    message Response {
+        string token = 1;
+    }
+}
+
+service UserService {
+    rpc CreateUser(CreateUserService.Request) returns (UserEntity);
+    rpc GetUser(GetUserService.Request) returns (UserEntity);
+    rpc Login(CreateUserService.Request) returns (LoginService.Response);
+}

@@ -1,0 +1,9 @@
+type: google.api.service
+config_version: 3
+
+http:
+    rules:
+        - selector: message.v1.MessageService.GetMessageList
+          get: /v1/messages/{session_id}
+        - selector: message.v1.MessageService.GetSessionList
+          get: /v1/sessions

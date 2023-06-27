@@ -1,116 +1,141 @@
 <template>
 	<view class="pageWrapper safe-area-inset-bottom">
-		<view class="page">
-			<view class="messageContainer">
-				<view v-for="i in messageList">
-					<Message :messageInfo="i" :isOwn="i.user_id===109"></Message>
-				</view>
-			</view>
-			<view class="sendBtnWrapper">
-				<view class="flex alignItemsCenter sendBtnContaienr safe-area-inset-bottom">
-					<view class="flex-1 mr10 inputContainer">
-						<u-input v-model="input"></u-input>
-					</view>
-					<view class="sendBtn" @click="onSendMsg">
-						<u-button type="success">发送</u-button>
-					</view>
-				</view>
-			</view>
+		<!-- <u-input></u-input> -->
+		<!-- 注意，如果需要兼容微信小程序，最好通过setRules方法设置rules规则 -->
+		<u--form labelPosition="left" :model="model1" :rules="rules" ref="uForm">
+			<u-form-item label="姓名" prop="userInfo.name" borderBottom ref="item1">
+				<u--input v-model="model1.userInfo.name" border="none" placeholder="请输入姓名"></u--input>
+			</u-form-item>
 
-		</view>
+			<u-form-item label="性别" prop="userInfo.sex" @click="showSex = true" borderBottom>
+				<u--input v-model="model1.userInfo.sex" disabled disabledColor="#ffffff" placeholder="请选择性别"
+					border="none"></u--input>
+				<u-icon slot="right" name="arrow-right"></u-icon>
+			</u-form-item>
 
+		</u--form>
+
+		<u-action-sheet :show="showSex" :actions="actions" @close="showSex = false" title="请选择性别" @select="sexSelect">
+		</u-action-sheet>
+		<u-button type="primary" text="进入聊天" customStyle="margin-top: 50px" @click="submit"
+			:loading="submitting"></u-button>
 	</view>
 
 </template>
 
 <script>
 	import {
-		formatNumber
-	} from '../../utils';
-	import Message from './components/message.vue'
+		Qiji
+	} from '../../service/request';
+	import {
+		UserService
+	} from '../../service/user';
 	export default {
 		data() {
 			return {
-				input: '',
-				messageList: [{
-						user_id: 1,
-						avatar: '',
-						user_name: '李四',
-						content: '天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎'
+				submitting: false,
+				showSex: false,
+				model1: {
+					userInfo: {
+						name: '',
+						sex: '',
+						sexValue: '',
+					},
+				},
+				actions: [{
+						name: '男',
+						value: 1,
 					},
 					{
-						user_id: 109,
-						avatar: '',
-						user_name: '张三',
-						content: '宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖'
-					},
-					{
-						user_id: 1,
-						avatar: '',
-						user_name: '李四',
-						content: '666'
-					},
-					{
-						user_id: 1,
-						avatar: '',
-						user_name: '李四',
-						content: '找到组织了！！'
-					},
-					{
-						user_id: 1,
-						avatar: '',
-						user_name: '李四',
-						content: '666'
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '张三',
-						content: '哈哈哈哈哈 你也是段友？'
-					},
-					{
-						user_id: 1,
-						avatar: '',
-						user_name: '李四',
-						content: '嗯呢'
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '张三',
-						content: '666'
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '张三',
-						content: '666'
+						name: '女',
+						value: 2,
 					},
 				],
+				rules: {
+					'userInfo.name': {
+						type: 'string',
+						required: true,
+						message: '请填写姓名',
+						trigger: ['blur', 'change']
+					},
+					'userInfo.sex': {
+						type: 'string',
+						max: 1,
+						required: true,
+						message: '请选择男或女',
+						trigger: ['blur', 'change']
+					},
+				},
 			};
 		},
-		components: {
-			Message
+		onReady() {
+			if (localStorage.getItem(Qiji.TokenKey)) {
+				uni.redirectTo({
+					url: "/pages/sessionList/sessionList"
+				})
+			}
+
+			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
+			this.$refs.uForm.setRules(this.rules)
+			UserService.GetUser(1).then(res => {
+				console.log(res, 'res');
+			})
+
+			// uni.connectSocket({
+			// 	url: `ws://localhost:9090/ws?id=123`
+			// })
+			// uni.onSocketOpen(function() {
+			// 	uni.onSocketMessage((v) => {
+
+			// 		console.log(v.data, JSON.parse(v.data), 'onSocketMessage');
+			// 	})
+			// 	setInterval(() => {
+			// 		uni.sendSocketMessage({
+			// 			data: "zhangzhulei"
+			// 		})
+			// 	}, 4000)
+			// })
+
 		},
-		onLoad() {},
 		methods: {
 			/** 点击 */
 			onClick() {
 				formatNumber(e);
 				console.log(e, 'e');
 			},
+			sexSelect(e) {
+				console.log(e, 'e');
+				this.model1.userInfo.sex = e.name
+				this.model1.userInfo.sexValue = e.value
+				this.$refs.uForm.validateField('userInfo.sex')
+			},
+			submit() {
+				// 如果有错误，会在catch中返回报错信息数组，校验通过则在then中返回true
+				this.$refs.uForm.validate().then(res => {
+					this.submitting = true;
+					const userInfo = this.model1.userInfo || {}
+					UserService.Login({
+						user: {
+							name: userInfo.name,
+							gender: userInfo.sexValue
+						}
+					}).then(res => {
+						uni.$u.toast('登录成功')
+						localStorage.setItem(Qiji.TokenKey, res?.token)
+						// todo 跳转到会话列表
+						uni.redirectTo({
+							url: "pages/sessionList/sessionList"
+						})
+					}).catch(err => {
+						uni.$u.toast(err?.message || '登录失败')
+					}).finally(() => {
+						this.submitting = false;
+					})
 
-			/** 发送消息 */
-			onSendMsg() {
-				if (!this.input) return;
-				this.messageList.push({
-					user_id: 109,
-					user_name: '张三',
-					content: this.input
+				}).catch(errors => {
+					console.log(err, 'err');
 				})
-				this.input = '';
-				console.log(this.input, 'input');
-			}
+			},
 		},
 	};
 </script>
@@ -123,43 +148,7 @@
 		/* #ifdef H5 */
 		height: 100%;
 		/* #endif */
-		padding-bottom: 0;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-	}
 
-	.page {
-		position: relative;
-		height: 100%;
-		padding: 32rpx 0;
-	}
-
-	.messageContainer {
-		overflow-y: auto;
-		padding-bottom: 15%;
-		height: 100%;
-		padding: 0 32rpx;
-	}
-
-	.inputContainer {
-		background-color: #fff;
-	}
-
-	.sendBtnWrapper {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		padding: 10rpx;
-		border-radius: 6rpx;
-		background-color: #e9e9e9;
-	}
-
-	.sendBtnContaienr {
-		width: 100%;
-	}
-
-	.sendBtn {
-		width: 120rpx;
+		padding: 32rpx
 	}
 </style>

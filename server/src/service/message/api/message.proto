@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package message.v1;
+
+option go_package="qiji/src/service/message/api/gen/v1;messagepb";
+
+message StreamMessageRequest {
+    string name = 1;
+}
+message StreamMessageResponse {
+    // 消息
+    string message = 1;
+}
+
+message Message {
+    int32 id = 1;
+    // 消息内容
+    string content = 2;
+    // 消息发送人
+    int32 sender_id = 3;
+    // 消息发送时间（s）
+    int32 send_time_second = 4;
+}
+
+enum SessionType {
+    session_type_not_specified = 0;
+    // 私聊会话
+    private = 1;
+    // 群聊会话
+    group = 2;
+}
+
+message GetMessageListSerivce {
+    message Request {
+        // 会话id
+        int32 session_id = 1;
+    }
+    message Response {
+        repeated Message message_list = 1;
+    }
+}
+
+message SendMessageService {
+    
+    message Request {
+        // 消息内容
+        string content = 1;
+        // 会话类型
+        SessionType session_type = 2;
+        // 会话id
+        int32 session_id = 3;
+    }
+}
+
+message GetSessionListService {
+    message SessionInfo {
+        // 会话id
+        int32 id = 1;
+        // 会话名称
+        string name = 2;
+        // 会话类型
+        SessionType session_type = 3;
+    }
+    message Request {}
+    message Response {
+        repeated SessionInfo session_list = 1;
+    }
+}
+
+service MessageService {
+    rpc StreamMessage (stream StreamMessageRequest) returns (stream StreamMessageResponse) {}
+    rpc GetMessageList(GetMessageListSerivce.Request) returns (GetMessageListSerivce.Response);  
+    rpc SendMessage(stream SendMessageService.Request) returns (stream Message);  
+    rpc GetSessionList(GetSessionListService.Request) returns (GetSessionListService.Response);  
+}
