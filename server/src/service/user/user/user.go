@@ -7,6 +7,7 @@ import (
 	mysqlConst "qiji/src/shared/mysql"
 	"time"
 
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -15,6 +16,7 @@ type Service struct {
 	Mysql          *dao.Mysql
 	TokenExpire    time.Duration
 	TokenGenerator TokenGenerator
+	Logger         *zap.Logger
 }
 
 type TokenGenerator interface {
@@ -50,6 +52,14 @@ func (s *Service) Login(c context.Context, req *userpb.CreateUserService_Request
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	go func() {
+		err := s.Mysql.HandleAddUserToGroups(context.Background(), userId)
+		if err != nil {
+			s.Logger.Error("关联群组失败", zap.Any("用户", userId))
+		}
+	}()
+
 	return &userpb.LoginService_Response{
 		Token: updateRecord.Token,
 	}, nil

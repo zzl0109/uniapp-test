@@ -1,7 +1,9 @@
 package dao
 
 import (
+	"context"
 	"fmt"
+	"qiji/src/model"
 	userpb "qiji/src/service/user/api/gen/v1"
 	mysqlConst "qiji/src/shared/mysql"
 
@@ -110,4 +112,24 @@ func (m *Mysql) UpdateUser(user *userpb.User, userId int) error {
 	// 	Id:   int32(newUser.ID),
 	// 	User: user,
 	// }, nil
+}
+
+func (m *Mysql) HandleAddUserToGroups(c context.Context, userId int) error {
+	var groups []*model.Group
+	res := m.db.Limit(10).Find(&groups)
+	if res.Error != nil {
+		return res.Error
+	}
+
+	var groupMembers []*model.GroupMember
+
+	for _, v := range groups {
+		groupMembers = append(groupMembers, &model.GroupMember{
+			GroupId: v.ID,
+			UserId:  uint(userId),
+		})
+	}
+	m.db.Create(groupMembers)
+
+	return nil
 }

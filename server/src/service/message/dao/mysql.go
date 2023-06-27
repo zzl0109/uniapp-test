@@ -16,7 +16,17 @@ func NewMysql(host string) *Mysql {
 	db := mysqlConst.NewDB(host)
 	err := db.AutoMigrate(&model.Group{})
 	if err != nil {
-		fmt.Printf("group模型构建失败: %s", err)
+		fmt.Printf("group表构建失败: %s", err)
+	}
+
+	err = db.AutoMigrate(&model.GroupMember{})
+	if err != nil {
+		fmt.Printf("groupMember表构建失败: %s", err)
+	}
+
+	err = db.AutoMigrate(&model.Message{})
+	if err != nil {
+		fmt.Printf("message表构建失败: %s", err)
 	}
 
 	return &Mysql{

@@ -58,6 +58,7 @@ func main() {
 				Mysql:          userDao,
 				TokenExpire:    time.Hour * 24 * 365,
 				TokenGenerator: tokenGenerator,
+				Logger:         logger,
 			})
 		},
 	})
