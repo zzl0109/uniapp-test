@@ -1,17 +1,22 @@
 <template>
 	<view class="pageWrapper safe-area-inset-bottom">
 		<view class="page">
-			<view class="messageContainer">
-				<view v-for="i in messageList">
+			<scroll-view class="messageContainer" scroll-y :scroll-top="scrollTop" @scroll="handleScrollY">
+				<view v-for="(i, index) in messageList" :key="index" class="message">
 					<Message :messageInfo="i" :isOwn="i.user_id===109"></Message>
 				</view>
-			</view>
+			</scroll-view>
+			<!-- <view class="messageContainer">
+				<view v-for="(i, index) in messageList" :key="index">
+					<Message :messageInfo="i" :isOwn="i.user_id===109"></Message>
+				</view>
+			</view> -->
 			<view class="sendBtnWrapper">
 				<view class="flex alignItemsCenter sendBtnContaienr safe-area-inset-bottom">
 					<view class="flex-1 mr10 inputContainer">
-						<u-input v-model="input"></u-input>
+						<u-input v-model="input" hold-keyboard="true"></u-input>
 					</view>
-					<view class="sendBtn" @click="onSendMsg">
+					<view class="sendBtn" @touchend.prevent="onSendMsg" hold-keyboard="true">
 						<u-button type="success">发送</u-button>
 					</view>
 				</view>
@@ -32,6 +37,10 @@
 		data() {
 			return {
 				input: '',
+				scrollTop: 0,
+				old: {
+					scrollTop: 0
+				},
 				messageList: [{
 						user_id: 1,
 						avatar: '',
@@ -92,27 +101,8 @@
 		components: {
 			Message
 		},
-		onLoad() {
-			uni.request({
-				url: 'http://localhost:8888/v1/user/1',
-				method: "GET",
-				successr(res) {
-					console.log(res);
-				},
-				fail: console.error
-			})
-			// uni.request({
-			// 	url: 'localhost:8888/v1/user',
-			// 	method: "POST",
-			// 	data: {
-			// 		name: '张三',
-			// 		gender: 1
-			// 	},
-			// 	successr(res) {
-			// 		console.log(res);
-			// 	},
-			// 	fail: console.error
-			// })
+		onLoad(query) {
+			console.log(query, 'query');
 
 			// uni.connectSocket({
 			// 	url: `ws://localhost:9090/ws`
@@ -145,7 +135,20 @@
 					content: this.input
 				})
 				this.input = '';
-				console.log(this.input, 'input');
+				this.$nextTick(function() {
+					this.goBottom()
+				})
+			},
+			handleScrollY: function(e) {
+				// console.log(e, 'handleScrollY')
+				this.old.scrollTop = e.detail.scrollTop
+			},
+			goBottom() {
+				// 解决view层不同步的问题
+				this.scrollTop = this.old.scrollTop
+				this.$nextTick(function() {
+					this.scrollTop = 9999999
+				});
 			}
 		},
 	};
@@ -167,14 +170,15 @@
 	.page {
 		position: relative;
 		height: 100%;
-		padding: 32rpx 0;
+		/* padding: 32rpx 0; */
 	}
 
 	.messageContainer {
+		box-sizing: border-box;
 		overflow-y: auto;
 		padding-bottom: 15%;
 		height: 100%;
-		padding: 0 32rpx;
+		padding: 0 32rpx 120rpx;
 	}
 
 	.inputContainer {

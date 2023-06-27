@@ -15,7 +15,7 @@ export namespace Qiji {
 	export const sendRequest = <Request, Response>(o : RequestOption<Request, Response>) : Promise<Response> => {
 		return new Promise((resolve, reject) => {
 			const header : Record<string, any> = {}
-			header.authorization = `Bearer ${localStorage.getItem(TokenKey) || ''}`
+			header.authorization = `Bearer ${uni.getStorageSync(Qiji.TokenKey) || ''}`
 
 			uni.request({
 				header,

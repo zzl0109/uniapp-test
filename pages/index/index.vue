@@ -12,7 +12,6 @@
 					border="none"></u--input>
 				<u-icon slot="right" name="arrow-right"></u-icon>
 			</u-form-item>
-
 		</u--form>
 
 		<u-action-sheet :show="showSex" :actions="actions" @close="showSex = false" title="请选择性别" @select="sexSelect">
@@ -20,10 +19,12 @@
 		<u-button type="primary" text="进入聊天" customStyle="margin-top: 50px" @click="submit"
 			:loading="submitting"></u-button>
 	</view>
-
 </template>
 
 <script>
+	import {
+		routing
+	} from '../../router';
 	import {
 		Qiji
 	} from '../../service/request';
@@ -56,30 +57,34 @@
 						type: 'string',
 						required: true,
 						message: '请填写姓名',
-						trigger: ['blur', 'change']
+						trigger: ['blur', 'change'],
 					},
 					'userInfo.sex': {
 						type: 'string',
 						max: 1,
 						required: true,
 						message: '请选择男或女',
-						trigger: ['blur', 'change']
+						trigger: ['blur', 'change'],
 					},
 				},
 			};
 		},
 		onReady() {
-			if (localStorage.getItem(Qiji.TokenKey)) {
+			if (uni.getStorageSync(Qiji.TokenKey)) {
 				uni.redirectTo({
-					url: "/pages/sessionList/sessionList"
-				})
+					url: routing.sessionList(),
+				});
 			}
 
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
-			this.$refs.uForm.setRules(this.rules)
-			UserService.GetUser(1).then(res => {
-				console.log(res, 'res');
-			})
+			this.$refs.uForm.setRules(this.rules);
+			UserService.GetUser(1)
+				.then((res) => {
+					console.log(res, 'GetUser res');
+				})
+				.catch((err) => {
+					console.log(err, 'GetUser err');
+				});
 
 			// uni.connectSocket({
 			// 	url: `ws://localhost:9090/ws?id=123`
@@ -95,7 +100,6 @@
 			// 		})
 			// 	}, 4000)
 			// })
-
 		},
 		methods: {
 			/** 点击 */
@@ -105,36 +109,42 @@
 			},
 			sexSelect(e) {
 				console.log(e, 'e');
-				this.model1.userInfo.sex = e.name
-				this.model1.userInfo.sexValue = e.value
-				this.$refs.uForm.validateField('userInfo.sex')
+				this.model1.userInfo.sex = e.name;
+				this.model1.userInfo.sexValue = e.value;
+				this.$refs.uForm.validateField('userInfo.sex');
 			},
 			submit() {
 				// 如果有错误，会在catch中返回报错信息数组，校验通过则在then中返回true
-				this.$refs.uForm.validate().then(res => {
-					this.submitting = true;
-					const userInfo = this.model1.userInfo || {}
-					UserService.Login({
-						user: {
-							name: userInfo.name,
-							gender: userInfo.sexValue
-						}
-					}).then(res => {
-						uni.$u.toast('登录成功')
-						localStorage.setItem(Qiji.TokenKey, res?.token)
-						// todo 跳转到会话列表
-						uni.redirectTo({
-							url: "pages/sessionList/sessionList"
-						})
-					}).catch(err => {
-						uni.$u.toast(err?.message || '登录失败')
-					}).finally(() => {
-						this.submitting = false;
+				this.$refs.uForm
+					.validate()
+					.then((res) => {
+						this.submitting = true;
+						const userInfo = this.model1.userInfo || {};
+						UserService.Login({
+								user: {
+									name: userInfo.name,
+									gender: userInfo.sexValue,
+								},
+							})
+							.then((res) => {
+								uni.$u.toast('登录成功');
+								uni.setStorageSync(Qiji.TokenKey, res?.token);
+								// todo 跳转到会话列表
+								uni.redirectTo({
+									url: routing.sessionList(),
+								});
+							})
+							.catch((err) => {
+								console.log(err, 'Login err');
+								uni.$u.toast(err?.message || '登录失败');
+							})
+							.finally(() => {
+								this.submitting = false;
+							});
 					})
-
-				}).catch(errors => {
-					console.log(err, 'err');
-				})
+					.catch((errors) => {
+						console.log(err, 'err');
+					});
 			},
 		},
 	};
@@ -149,6 +159,6 @@
 		height: 100%;
 		/* #endif */
 
-		padding: 32rpx
+		padding: 32rpx;
 	}
 </style>

@@ -15,17 +15,15 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/sessionList/sessionList",
+			"style": {
+				"navigationBarTitleText": "会话列表",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/sessionList/sessionList",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

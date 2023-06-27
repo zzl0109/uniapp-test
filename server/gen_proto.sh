@@ -13,14 +13,15 @@ function genProto {
 
     protoc -I=$PROTO_PATH --grpc-gateway_out=paths=source_relative,grpc_api_configuration=$PROTO_PATH/${DOMAIN}.yaml:$GO_OUT_PATH ${DOMAIN}.proto
 
-    # PBTS_BIN_DIR=../node_modules/.bin
-    # PBTS_OUT_DIR=../service/proto_gen/${DOMAIN}
-    # mkdir -p $PBTS_OUT_DIR
+    PBTS_BIN_DIR=../node_modules/.bin
+    PBTS_OUT_DIR=../service/proto_gen/${DOMAIN}
+    mkdir -p $PBTS_OUT_DIR
     # $PBTS_BIN_DIR/pbjs -t static -w es6 --no-create --no-encode --no-deocde --force-number --no-verify -o $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js $PROTO_PATH/${DOMAIN}.proto
-    # echo 'import * as $protobuf from "protobufjs";\n' > $PBTS_OUT_DIR/${DOMAIN}_pb.js
-    # cat $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js >> $PBTS_OUT_DIR/${DOMAIN}_pb.js
-    # rm $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js
-    # $PBTS_BIN_DIR/pbts -o $PBTS_OUT_DIR/${DOMAIN}_pb.d.ts $PBTS_OUT_DIR/${DOMAIN}_pb.js
+    $PBTS_BIN_DIR/pbjs -t static -w es6 --no-create --no-encode --no-deocde --force-number --no-verify --keep-case --keep-case-fieldnames --no-delimited  --no-beautify -o $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js $PROTO_PATH/${DOMAIN}.proto
+    echo 'import * as $protobuf from "protobufjs";\n' > $PBTS_OUT_DIR/${DOMAIN}_pb.js
+    cat $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js >> $PBTS_OUT_DIR/${DOMAIN}_pb.js
+    rm $PBTS_OUT_DIR/${DOMAIN}_pb_temp.js
+    $PBTS_BIN_DIR/pbts -o $PBTS_OUT_DIR/${DOMAIN}_pb.d.ts $PBTS_OUT_DIR/${DOMAIN}_pb.js
 }
 
 genProto message

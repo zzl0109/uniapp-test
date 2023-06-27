@@ -20,7 +20,8 @@ import (
 var addr = flag.String("addr", ":8082", "address to listen")
 var mysqlAddr = flag.String("mysql_addr", "118.89.93.58:3306", "mysql address")
 var privateKeyFile = flag.String("private_key_file", "src/service/user/private.key", "private key file")
-var publicKeyFile = flag.String("public_key_file", "src/service/user/public.key", "public key file")
+
+// var publicKeyFile = flag.String("public_key_file", "src/service/user/public.key", "public key file")
 
 func main() {
 	flag.Parse()
@@ -48,10 +49,10 @@ func main() {
 	tokenGenerator := token.NewJwtTokenGen("qiji/user", pKey)
 
 	runGrpcErr := server.RunGrpcServer(&server.GrpcConfig{
-		Name:                  "user",
-		Addr:                  *addr,
-		Logger:                logger,
-		AuthPublicKeyFilePath: *publicKeyFile,
+		Name:   "user",
+		Addr:   *addr,
+		Logger: logger,
+		// AuthPublicKeyFilePath: *publicKeyFile,
 		RegisterFunc: func(server *grpc.Server) {
 			userpb.RegisterUserServiceServer(server, &user.Service{
 				Mysql:          userDao,
