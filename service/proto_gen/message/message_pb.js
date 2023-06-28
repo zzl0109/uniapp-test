@@ -863,6 +863,7 @@ export const message = $root.message = (() => {
                  * @property {string} [content] Request content
                  * @property {message.v1.SessionType} [session_type] Request session_type
                  * @property {number} [session_id] Request session_id
+                 * @property {number} [sender_id] Request sender_id
                  */
 
                 /**
@@ -904,6 +905,14 @@ export const message = $root.message = (() => {
                 Request.prototype.session_id = 0;
 
                 /**
+                 * Request sender_id.
+                 * @member {number}sender_id
+                 * @memberof message.v1.SendMessageService.Request
+                 * @instance
+                 */
+                Request.prototype.sender_id = 0;
+
+                /**
                  * Decodes a Request message from the specified reader or buffer.
                  * @function decode
                  * @memberof message.v1.SendMessageService.Request
@@ -929,6 +938,9 @@ export const message = $root.message = (() => {
                             break;
                         case 3:
                             m.session_id = r.int32();
+                            break;
+                        case 4:
+                            m.sender_id = r.int32();
                             break;
                         default:
                             r.skipType(t & 7);
@@ -970,6 +982,9 @@ export const message = $root.message = (() => {
                     if (d.session_id != null) {
                         m.session_id = d.session_id | 0;
                     }
+                    if (d.sender_id != null) {
+                        m.sender_id = d.sender_id | 0;
+                    }
                     return m;
                 };
 
@@ -990,6 +1005,7 @@ export const message = $root.message = (() => {
                         d.content = "";
                         d.session_type = o.enums === String ? "session_type_not_specified" : 0;
                         d.session_id = 0;
+                        d.sender_id = 0;
                     }
                     if (m.content != null && m.hasOwnProperty("content")) {
                         d.content = m.content;
@@ -999,6 +1015,9 @@ export const message = $root.message = (() => {
                     }
                     if (m.session_id != null && m.hasOwnProperty("session_id")) {
                         d.session_id = m.session_id;
+                    }
+                    if (m.sender_id != null && m.hasOwnProperty("sender_id")) {
+                        d.sender_id = m.sender_id;
                     }
                     return d;
                 };

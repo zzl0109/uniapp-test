@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"net/http"
 	messagepb "qiji/src/service/message/api/gen/v1"
+	"qiji/src/util"
 
 	websocket "github.com/gorilla/websocket"
 	"go.uber.org/zap"
+	"google.golang.org/grpc/metadata"
 )
 
 func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient, logger *zap.Logger) http.HandlerFunc {
@@ -23,7 +25,16 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 		}
 		defer c.Close()
 
-		ms, err := messageClient.SendMessage(context.Background())
+		ctx := metadata.AppendToOutgoingContext(context.Background(), util.SessionIdKey, sessionId)
+		ms, err := messageClient.SendMessage(ctx)
+		defer func() {
+			err := ms.CloseSend()
+			logger.Info("关闭流式通道")
+			if err != nil {
+				logger.Error("关闭流式通道失败", zap.Error(err))
+			}
+		}()
+
 		if err != nil {
 			logger.Error("建立流式服务通道失败", zap.Error(err))
 			return
@@ -42,7 +53,7 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 					break
 				}
 
-				logger.Info("收到消息 %s", zap.String("msg", string(p)))
+				logger.Info("收到消息 ", zap.String("msg", string(p)))
 				var message messagepb.SendMessageService_Request
 				json.Unmarshal(p, &message)
 
@@ -50,6 +61,7 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 					Content:     message.Content,
 					SessionId:   message.SessionId,
 					SessionType: message.SessionType,
+					SenderId:    message.SenderId,
 				})
 				if err != nil {
 					logger.Error("流式服务发送消息失败", zap.Error(err))

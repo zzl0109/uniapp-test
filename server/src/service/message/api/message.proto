@@ -49,6 +49,8 @@ message SendMessageService {
         SessionType session_type = 2;
         // 会话id
         int32 session_id = 3;
+        // 发送者id
+        int32 sender_id = 4;
     }
 }
 

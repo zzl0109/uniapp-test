@@ -392,6 +392,9 @@ export namespace message {
 
                 /** Request session_id */
                 session_id?: number;
+
+                /** Request sender_id */
+                sender_id?: number;
             }
 
             /** Represents a Request. */
@@ -411,6 +414,9 @@ export namespace message {
 
                 /** Request session_id. */
                 public session_id: number;
+
+                /** Request sender_id. */
+                public sender_id: number;
 
                 /**
                  * Decodes a Request message from the specified reader or buffer.

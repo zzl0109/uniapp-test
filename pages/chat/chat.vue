@@ -133,15 +133,16 @@
 			/** 发送消息 */
 			onSendMsg() {
 				if (!this.input) return;
-				this.messageList.push({
-					user_id: this?.userInfo?.id,
-					user_name: '张三',
-					content: this.input,
-				});
+				// this.messageList.push({
+				// 	user_id: this?.userInfo?.id,
+				// 	user_name: '张三',
+				// 	content: this.input,
+				// });
 				this.handleSendMessage({
 					content: this.input,
 					session_type: message.v1.SessionType.group,
 					session_id: this.sessionId,
+					sender_id: this.userInfo.id
 				});
 				this.input = '';
 				this.$nextTick(function() {
@@ -151,6 +152,17 @@
 
 			handleReceiveMessage(m) {
 				console.log(m, 'handleReceiveMessage');
+				try {
+					const msg = {
+						...m
+					};
+					msg.user_id = msg.sender_id;
+					this.messageList.push(msg);
+					console.log(this.messageList, 'messageList');
+					this.goBottom()
+				} catch (e) {
+					console.error(e, '转换消息失败');
+				}
 			},
 
 			handleScrollY: function(e) {

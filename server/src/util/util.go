@@ -1,6 +1,12 @@
 package util
 
-import "math/rand"
+import (
+	"math/rand"
+)
+
+const (
+	SessionIdKey = "session_id"
+)
 
 func GenRandomStr(n int) string {
 	letterByte := []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

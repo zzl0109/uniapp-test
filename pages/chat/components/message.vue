@@ -4,7 +4,7 @@
 			<u-avatar src="../../../static/logo.png"></u-avatar>
 		</view>
 		<view class="flex-1">
-			<view class="userName">{{ messageInfo.user_name }}</view>
+			<view class="userName">{{ messageInfo.user_name || messageInfo.user_id }}</view>
 			<view class="content">{{ messageInfo.content }}</view>
 		</view>
 	</view>

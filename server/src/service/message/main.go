@@ -7,6 +7,7 @@ import (
 	"qiji/src/service/message/dao"
 	"qiji/src/service/message/message"
 	"qiji/src/service/message/ws"
+	messageCenter "qiji/src/service/message/ws/messageCenter"
 	"qiji/src/shared/server"
 
 	"github.com/gorilla/websocket"
@@ -20,6 +21,7 @@ var addr = flag.String("addr", ":8081", "address to listen")
 var wsAddr = flag.String("ws_url", ":9090", "address for websocket")
 var authPublicKeyFile = flag.String("auth_public_key_file", "src/service/auth/public.key", "auth public key file")
 var mysqlAddr = flag.String("mysql_addr", "118.89.93.58:3306", "mysql address")
+var mqAddr = flag.String("rabbitmq_addr", "amqp://guest:guest@localhost:5673", "rabbitmq address")
 
 func main() {
 	flag.Parse()
@@ -36,7 +38,10 @@ func main() {
 		},
 	}
 
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(
+		*addr,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
 		logger.Error("实例化messageClient失败", zap.Error(err))
 	}
@@ -51,6 +56,11 @@ func main() {
 		}
 	}()
 
+	msgCenter, err := messageCenter.NewMessageCenter(*mqAddr, logger)
+	if err != nil {
+		logger.Error("实例化消息中心失败", zap.Error(err))
+	}
+
 	runGrpcErr := server.RunGrpcServer(&server.GrpcConfig{
 		Name:                  "message",
 		Addr:                  *addr,
@@ -58,7 +68,8 @@ func main() {
 		AuthPublicKeyFilePath: *authPublicKeyFile,
 		RegisterFunc: func(server *grpc.Server) {
 			messagepb.RegisterMessageServiceServer(server, &message.Service{
-				Mysql: dao.NewMysql(*mysqlAddr),
+				Mysql:         dao.NewMysql(*mysqlAddr),
+				MessageCenter: msgCenter,
 			})
 		},
 	})

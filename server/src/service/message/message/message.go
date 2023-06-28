@@ -5,14 +5,19 @@ import (
 	"fmt"
 	messagepb "qiji/src/service/message/api/gen/v1"
 	"qiji/src/service/message/dao"
+	"qiji/src/service/message/ws/messageCenter"
+	"qiji/src/shared/id"
+	"qiji/src/util"
 	"time"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
 type Service struct {
-	Mysql *dao.Mysql
+	Mysql         *dao.Mysql
+	MessageCenter *messageCenter.MessageCenter
 }
 
 func (s *Service) StreamMessage(srv messagepb.MessageService_StreamMessageServer) error {
@@ -63,18 +68,70 @@ func (s *Service) GetSessionList(c context.Context, req *messagepb.GetSessionLis
 }
 
 func (s *Service) SendMessage(srv messagepb.MessageService_SendMessageServer) error {
+	// 从 Context 中提取额外参数
+	metadata, ok := metadata.FromIncomingContext(srv.Context())
+	if !ok {
+		return fmt.Errorf("failed to get extra parameter from Context")
+	}
+
+	var sessionId id.SessionId
+	params := metadata.Get(util.SessionIdKey)
+	if len(params) == 0 {
+		return fmt.Errorf("无sessionId")
+	}
+	sessionId = id.SessionId(params[0])
+	fmt.Printf("metadata %v \n", sessionId)
+
+	go func() {
+		done := make(chan struct{})
+		msgs, cleanUp, err := s.MessageCenter.Subscribe(context.Background(), sessionId)
+		if err != nil {
+			fmt.Printf("订阅失败，%v \n", err)
+			cleanUp()
+			return
+		}
+
+		for {
+			select {
+			case msg := <-msgs:
+				if err := srv.Send(msg); err != nil {
+					fmt.Printf("stream server发送消息失败 %v", err)
+					done <- struct{}{}
+				}
+			case <-done:
+				cleanUp()
+				return
+			case <-srv.Context().Done():
+				cleanUp()
+				return
+			}
+		}
+
+	}()
+
 	for {
 		recv, err := srv.Recv()
+
 		if err != nil {
 			return err
 		}
-		fmt.Println("Received message:", recv.Content)
-		if err := srv.Send(&messagepb.Message{
+
+		err = s.MessageCenter.Publish(context.Background(), sessionId, &messagepb.Message{
 			Content:        recv.Content,
-			SenderId:       1,
+			SenderId:       recv.SenderId,
 			SendTimeSecond: int32(time.Now().Unix()),
-		}); err != nil {
-			return err
+		})
+		if err != nil {
+			fmt.Printf("推送消息失败 %v \n", err)
 		}
+
+		// fmt.Println("Received message:", recv.Content)
+		// if err := srv.Send(&messagepb.Message{
+		// 	Content:        recv.Content,
+		// 	SenderId:       1,
+		// 	SendTimeSecond: int32(time.Now().Unix()),
+		// }); err != nil {
+		// 	return err
+		// }
 	}
 }
