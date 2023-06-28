@@ -1,14 +1,25 @@
 <script>
+	import {
+		useUserStore
+	} from './stores/user'
+	import {
+		mapActions
+	} from 'pinia'
+
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			this.getUserInfo()
 		},
 		onShow: function() {
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
-		}
+		},
+		methods: {
+			...mapActions(useUserStore, ['getUserInfo'])
+		},
 	}
 </script>
 

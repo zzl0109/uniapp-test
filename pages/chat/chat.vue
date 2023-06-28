@@ -3,14 +3,9 @@
 		<view class="page">
 			<scroll-view class="messageContainer" scroll-y :scroll-top="scrollTop" @scroll="handleScrollY">
 				<view v-for="(i, index) in messageList" :key="index" class="message">
-					<Message :messageInfo="i" :isOwn="i.user_id===109"></Message>
+					<Message :messageInfo="i" :isOwn="i.user_id === userInfo.id"></Message>
 				</view>
 			</scroll-view>
-			<!-- <view class="messageContainer">
-				<view v-for="(i, index) in messageList" :key="index">
-					<Message :messageInfo="i" :isOwn="i.user_id===109"></Message>
-				</view>
-			</view> -->
 			<view class="sendBtnWrapper">
 				<view class="flex alignItemsCenter sendBtnContaienr safe-area-inset-bottom">
 					<view class="flex-1 mr10 inputContainer">
@@ -21,11 +16,8 @@
 					</view>
 				</view>
 			</view>
-
 		</view>
-
 	</view>
-
 </template>
 
 <script>
@@ -38,99 +30,98 @@
 	import {
 		formatNumber
 	} from '../../utils';
-	import Message from './components/message.vue'
+	import Message from './components/message.vue';
+	import {
+		mapState
+	} from 'pinia';
+	import {
+		useUserStore
+	} from '../../stores/user';
+
 	export default {
 		data() {
 			return {
 				handleSendMessage: (m) => {},
 				input: '',
 				sessionId: 0,
-				scrollTop: 0,
+				scrollTop: 999999,
 				old: {
-					scrollTop: 0
+					scrollTop: 0,
 				},
 				messageList: [{
-						user_id: 1,
+						user_id: 123,
 						avatar: '',
 						user_name: '李四',
-						content: '天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎'
+						content: '天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎',
 					},
 					{
 						user_id: 109,
 						avatar: '',
-						user_name: '张三',
-						content: '宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖'
+						user_name: '王五',
+						content: '宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖',
 					},
 					{
-						user_id: 1,
+						user_id: 123,
 						avatar: '',
 						user_name: '李四',
-						content: '666'
+						content: '666',
 					},
 					{
-						user_id: 1,
+						user_id: 123,
 						avatar: '',
 						user_name: '李四',
-						content: '找到组织了！！'
+						content: '找到组织了！！',
 					},
 					{
-						user_id: 1,
+						user_id: 123,
 						avatar: '',
 						user_name: '李四',
-						content: '666'
+						content: '666',
 					},
 					{
 						user_id: 109,
 						avatar: '',
-						user_name: '张三',
-						content: '哈哈哈哈哈 你也是段友？'
+						user_name: '王五',
+						content: '哈哈哈哈哈 你也是段友？',
 					},
 					{
-						user_id: 1,
+						user_id: 123,
 						avatar: '',
 						user_name: '李四',
-						content: '嗯呢'
+						content: '嗯呢',
 					},
 					{
 						user_id: 109,
 						avatar: '',
-						user_name: '张三',
-						content: '666'
+						user_name: '王五',
+						content: '666',
 					},
 					{
 						user_id: 109,
 						avatar: '',
-						user_name: '张三',
-						content: '666'
+						user_name: '王五',
+						content: '666',
 					},
 				],
 			};
 		},
+		computed: {
+			...mapState(useUserStore, ['userInfo']),
+		},
 		components: {
-			Message
+			Message,
 		},
 		onLoad(query) {
+			console.log(this.userInfo, this.userInfo.id, 'userInfo');
 			console.log(query, 'query');
-			this.sessionId = query?.sessionId || 0
-			this.handleSendMessage = MessageSerivce.JoinChat(query?.sessionId, this.handleReceiveMessage)
-
-			// uni.connectSocket({
-			// 	url: `ws://localhost:9090/ws`
-			// })
-			// uni.onSocketOpen(function() {
-			// 	uni.onSocketMessage((v) => {
-			// 		console.log(v, 'onSocketMessage');
-			// 	})
-			// 	setInterval(() => {
-			// 		uni.sendSocketMessage({
-			// 			data: "zhangzhulei"
-			// 		})
-			// 	}, 1000)
-
-			// });
+			this.sessionId = query?.sessionId || 0;
+			this.handleSendMessage = MessageSerivce.JoinChat(
+				query?.sessionId,
+				this.handleReceiveMessage
+			);
 		},
 		onUnload() {
-			uni.closeSocket()
+			uni.closeSocket();
 		},
 		methods: {
 			/** 点击 */
@@ -143,20 +134,19 @@
 			onSendMsg() {
 				if (!this.input) return;
 				this.messageList.push({
-					user_id: 109,
+					user_id: this?.userInfo?.id,
 					user_name: '张三',
-					content: this.input
-				})
+					content: this.input,
+				});
 				this.handleSendMessage({
 					content: this.input,
 					session_type: message.v1.SessionType.group,
-					session_id: this.sessionId
-				})
+					session_id: this.sessionId,
+				});
 				this.input = '';
 				this.$nextTick(function() {
-					this.goBottom()
-				})
-
+					this.goBottom();
+				});
 			},
 
 			handleReceiveMessage(m) {
@@ -165,15 +155,15 @@
 
 			handleScrollY: function(e) {
 				// console.log(e, 'handleScrollY')
-				this.old.scrollTop = e.detail.scrollTop
+				this.old.scrollTop = e.detail.scrollTop;
 			},
 			goBottom() {
 				// 解决view层不同步的问题
-				this.scrollTop = this.old.scrollTop
+				this.scrollTop = this.old.scrollTop;
 				this.$nextTick(function() {
-					this.scrollTop = 9999999
+					this.scrollTop = 9999999;
 				});
-			}
+			},
 		},
 	};
 </script>
