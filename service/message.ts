@@ -22,4 +22,49 @@ export namespace MessageSerivce {
 					message.v1.GetSessionListService.Response.fromObject,
 			});
 		};
+
+	export type SendMessage = (m : message.v1.SendMessageService.IRequest) => void;
+	export type ReceiveMessage = (m : message.v1.SendMessageService.IRequest) => void;
+
+	export interface JoinChatResult {
+		sendMessage : SendMessage;
+	}
+
+	export const JoinChat = (sessionId : number, onReceiveMessage : ReceiveMessage) => {
+		var socketOpen = false;
+		var socketMsgQueue : message.v1.SendMessageService.IRequest[] = [];
+
+		uni.connectSocket({
+			url: `${Qiji.wsAddr}/chat?session_id=${sessionId}`
+		})
+
+		uni.onSocketOpen(() => {
+			uni.onSocketMessage((v) => {
+				try {
+					const m = JSON.parse(v?.data) as message.v1.SendMessageService.IRequest
+					onReceiveMessage(m)
+				} catch (e) {
+					console.error("接受消息失败", e)
+				}
+			})
+
+			socketOpen = true;
+			for (var i = 0; i < socketMsgQueue.length; i++) {
+				sendMessage(socketMsgQueue[i]);
+			}
+			socketMsgQueue = [];
+		});
+
+		const sendMessage : SendMessage = (m) => {
+			if (socketOpen) {
+				uni.sendSocketMessage({
+					data: JSON.stringify(m)
+				})
+			} else {
+				socketMsgQueue.push(m)
+			}
+		}
+
+		return sendMessage;
+	}
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	messagepb "qiji/src/service/message/api/gen/v1"
 	"qiji/src/service/message/dao"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -68,7 +69,11 @@ func (s *Service) SendMessage(srv messagepb.MessageService_SendMessageServer) er
 			return err
 		}
 		fmt.Println("Received message:", recv.Content)
-		if err := srv.Send(&messagepb.Message{Content: recv.Content}); err != nil {
+		if err := srv.Send(&messagepb.Message{
+			Content:        recv.Content,
+			SenderId:       1,
+			SendTimeSecond: int32(time.Now().Unix()),
+		}); err != nil {
 			return err
 		}
 	}

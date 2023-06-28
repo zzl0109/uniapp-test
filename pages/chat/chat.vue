@@ -14,7 +14,7 @@
 			<view class="sendBtnWrapper">
 				<view class="flex alignItemsCenter sendBtnContaienr safe-area-inset-bottom">
 					<view class="flex-1 mr10 inputContainer">
-						<u-input v-model="input" hold-keyboard="true"></u-input>
+						<u-input v-model="input" :hold-keyboard="true"></u-input>
 					</view>
 					<view class="sendBtn" @touchend.prevent="onSendMsg" hold-keyboard="true">
 						<u-button type="success">发送</u-button>
@@ -30,13 +30,21 @@
 
 <script>
 	import {
+		MessageSerivce
+	} from '../../service/message';
+	import {
+		message
+	} from '../../service/proto_gen/message/message_pb';
+	import {
 		formatNumber
 	} from '../../utils';
 	import Message from './components/message.vue'
 	export default {
 		data() {
 			return {
+				handleSendMessage: (m) => {},
 				input: '',
+				sessionId: 0,
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
@@ -103,6 +111,8 @@
 		},
 		onLoad(query) {
 			console.log(query, 'query');
+			this.sessionId = query?.sessionId || 0
+			this.handleSendMessage = MessageSerivce.JoinChat(query?.sessionId, this.handleReceiveMessage)
 
 			// uni.connectSocket({
 			// 	url: `ws://localhost:9090/ws`
@@ -119,6 +129,9 @@
 
 			// });
 		},
+		onUnload() {
+			uni.closeSocket()
+		},
 		methods: {
 			/** 点击 */
 			onClick() {
@@ -134,11 +147,22 @@
 					user_name: '张三',
 					content: this.input
 				})
+				this.handleSendMessage({
+					content: this.input,
+					session_type: message.v1.SessionType.group,
+					session_id: this.sessionId
+				})
 				this.input = '';
 				this.$nextTick(function() {
 					this.goBottom()
 				})
+
 			},
+
+			handleReceiveMessage(m) {
+				console.log(m, 'handleReceiveMessage');
+			},
+
 			handleScrollY: function(e) {
 				// console.log(e, 'handleScrollY')
 				this.old.scrollTop = e.detail.scrollTop

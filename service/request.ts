@@ -12,10 +12,12 @@ export namespace Qiji {
 	export const AuthErr = "AUTH_ERR";
 	export const TokenKey = "token";
 
-	export const sendRequest = <Request, Response>(o : RequestOption<Request, Response>) : Promise<Response> => {
+	export const sendRequest = <Request, Response>(o : RequestOption<Request, Response>, skipToken ?: boolean) : Promise<Response> => {
 		return new Promise((resolve, reject) => {
 			const header : Record<string, any> = {}
-			header.authorization = `Bearer ${uni.getStorageSync(Qiji.TokenKey) || ''}`
+			if (!skipToken) {
+				header.authorization = `Bearer ${uni.getStorageSync(Qiji.TokenKey) || ''}`
+			}
 
 			uni.request({
 				header,

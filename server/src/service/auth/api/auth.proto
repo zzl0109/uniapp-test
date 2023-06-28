@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package auth.v1;
+
+option go_package="qiji/src/service/auth/api/gen/v1;authpb";
+
+enum Gender {
+    gender_not_specified = 0;
+    male = 1;
+    female = 2;
+}
+
+message UserEntity {
+    int32 id = 1;
+    User user = 2;
+}
+
+message User {
+    string name = 1;
+    Gender gender = 2;
+    string token = 3;
+}
+
+message LoginService {
+    message Request {
+        User user = 1;
+    }
+    message Response {
+        string token = 1;
+    }
+}
+
+service AuthService {
+    rpc Login(LoginService.Request) returns (LoginService.Response);
+}

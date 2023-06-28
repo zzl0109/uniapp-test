@@ -6,20 +6,20 @@ const $Reader = $protobuf.Reader, $util = $protobuf.util;
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const user = $root.user = (() => {
+export const auth = $root.auth = (() => {
 
     /**
-     * Namespace user.
-     * @exports user
+     * Namespace auth.
+     * @exports auth
      * @namespace
      */
-    const user = {};
+    const auth = {};
 
-    user.v1 = (function() {
+    auth.v1 = (function() {
 
         /**
          * Namespace v1.
-         * @memberof user
+         * @memberof auth
          * @namespace
          */
         const v1 = {};
@@ -43,18 +43,18 @@ export const user = $root.user = (() => {
 
             /**
              * Properties of a UserEntity.
-             * @memberof user.v1
+             * @memberof auth.v1
              * @interface IUserEntity
              * @property {number} [id] UserEntity id
-             * @property {user.v1.IUser} [user] UserEntity user
+             * @property {auth.v1.IUser} [user] UserEntity user
              */
 
             /**
              * Constructs a new UserEntity.
-             * @memberof user.v1
+             * @memberof auth.v1
              * @classdesc Represents a UserEntity.
              * @constructor
-             * @param {user.v1.IUserEntity=} [p] Properties to set
+             * @param {auth.v1.IUserEntity=} [p] Properties to set
              */
             function UserEntity(p) {
                 if (p)
@@ -66,15 +66,15 @@ export const user = $root.user = (() => {
             /**
              * UserEntity id.
              * @member {number}id
-             * @memberof user.v1.UserEntity
+             * @memberof auth.v1.UserEntity
              * @instance
              */
             UserEntity.prototype.id = 0;
 
             /**
              * UserEntity user.
-             * @member {(user.v1.IUser|null|undefined)}user
-             * @memberof user.v1.UserEntity
+             * @member {(auth.v1.IUser|null|undefined)}user
+             * @memberof auth.v1.UserEntity
              * @instance
              */
             UserEntity.prototype.user = null;
@@ -82,18 +82,18 @@ export const user = $root.user = (() => {
             /**
              * Decodes a UserEntity message from the specified reader or buffer.
              * @function decode
-             * @memberof user.v1.UserEntity
+             * @memberof auth.v1.UserEntity
              * @static
              * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
              * @param {number} [l] Message length if known beforehand
-             * @returns {user.v1.UserEntity} UserEntity
+             * @returns {auth.v1.UserEntity} UserEntity
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             UserEntity.decode = function decode(r, l) {
                 if (!(r instanceof $Reader))
                     r = $Reader.create(r);
-                var c = l === undefined ? r.len : r.pos + l, m = new $root.user.v1.UserEntity();
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.auth.v1.UserEntity();
                 while (r.pos < c) {
                     var t = r.uint32();
                     switch (t >>> 3) {
@@ -101,7 +101,7 @@ export const user = $root.user = (() => {
                         m.id = r.int32();
                         break;
                     case 2:
-                        m.user = $root.user.v1.User.decode(r, r.uint32());
+                        m.user = $root.auth.v1.User.decode(r, r.uint32());
                         break;
                     default:
                         r.skipType(t & 7);
@@ -114,22 +114,22 @@ export const user = $root.user = (() => {
             /**
              * Creates a UserEntity message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof user.v1.UserEntity
+             * @memberof auth.v1.UserEntity
              * @static
              * @param {Object.<string,*>} d Plain object
-             * @returns {user.v1.UserEntity} UserEntity
+             * @returns {auth.v1.UserEntity} UserEntity
              */
             UserEntity.fromObject = function fromObject(d) {
-                if (d instanceof $root.user.v1.UserEntity)
+                if (d instanceof $root.auth.v1.UserEntity)
                     return d;
-                var m = new $root.user.v1.UserEntity();
+                var m = new $root.auth.v1.UserEntity();
                 if (d.id != null) {
                     m.id = d.id | 0;
                 }
                 if (d.user != null) {
                     if (typeof d.user !== "object")
-                        throw TypeError(".user.v1.UserEntity.user: object expected");
-                    m.user = $root.user.v1.User.fromObject(d.user);
+                        throw TypeError(".auth.v1.UserEntity.user: object expected");
+                    m.user = $root.auth.v1.User.fromObject(d.user);
                 }
                 return m;
             };
@@ -137,9 +137,9 @@ export const user = $root.user = (() => {
             /**
              * Creates a plain object from a UserEntity message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof user.v1.UserEntity
+             * @memberof auth.v1.UserEntity
              * @static
-             * @param {user.v1.UserEntity} m UserEntity
+             * @param {auth.v1.UserEntity} m UserEntity
              * @param {$protobuf.IConversionOptions} [o] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
@@ -155,7 +155,7 @@ export const user = $root.user = (() => {
                     d.id = m.id;
                 }
                 if (m.user != null && m.hasOwnProperty("user")) {
-                    d.user = $root.user.v1.User.toObject(m.user, o);
+                    d.user = $root.auth.v1.User.toObject(m.user, o);
                 }
                 return d;
             };
@@ -163,7 +163,7 @@ export const user = $root.user = (() => {
             /**
              * Converts this UserEntity to JSON.
              * @function toJSON
-             * @memberof user.v1.UserEntity
+             * @memberof auth.v1.UserEntity
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
@@ -178,19 +178,19 @@ export const user = $root.user = (() => {
 
             /**
              * Properties of a User.
-             * @memberof user.v1
+             * @memberof auth.v1
              * @interface IUser
              * @property {string} [name] User name
-             * @property {user.v1.Gender} [gender] User gender
+             * @property {auth.v1.Gender} [gender] User gender
              * @property {string} [token] User token
              */
 
             /**
              * Constructs a new User.
-             * @memberof user.v1
+             * @memberof auth.v1
              * @classdesc Represents a User.
              * @constructor
-             * @param {user.v1.IUser=} [p] Properties to set
+             * @param {auth.v1.IUser=} [p] Properties to set
              */
             function User(p) {
                 if (p)
@@ -202,15 +202,15 @@ export const user = $root.user = (() => {
             /**
              * User name.
              * @member {string}name
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @instance
              */
             User.prototype.name = "";
 
             /**
              * User gender.
-             * @member {user.v1.Gender}gender
-             * @memberof user.v1.User
+             * @member {auth.v1.Gender}gender
+             * @memberof auth.v1.User
              * @instance
              */
             User.prototype.gender = 0;
@@ -218,7 +218,7 @@ export const user = $root.user = (() => {
             /**
              * User token.
              * @member {string}token
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @instance
              */
             User.prototype.token = "";
@@ -226,18 +226,18 @@ export const user = $root.user = (() => {
             /**
              * Decodes a User message from the specified reader or buffer.
              * @function decode
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @static
              * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
              * @param {number} [l] Message length if known beforehand
-             * @returns {user.v1.User} User
+             * @returns {auth.v1.User} User
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             User.decode = function decode(r, l) {
                 if (!(r instanceof $Reader))
                     r = $Reader.create(r);
-                var c = l === undefined ? r.len : r.pos + l, m = new $root.user.v1.User();
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.auth.v1.User();
                 while (r.pos < c) {
                     var t = r.uint32();
                     switch (t >>> 3) {
@@ -261,15 +261,15 @@ export const user = $root.user = (() => {
             /**
              * Creates a User message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @static
              * @param {Object.<string,*>} d Plain object
-             * @returns {user.v1.User} User
+             * @returns {auth.v1.User} User
              */
             User.fromObject = function fromObject(d) {
-                if (d instanceof $root.user.v1.User)
+                if (d instanceof $root.auth.v1.User)
                     return d;
-                var m = new $root.user.v1.User();
+                var m = new $root.auth.v1.User();
                 if (d.name != null) {
                     m.name = String(d.name);
                 }
@@ -296,9 +296,9 @@ export const user = $root.user = (() => {
             /**
              * Creates a plain object from a User message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @static
-             * @param {user.v1.User} m User
+             * @param {auth.v1.User} m User
              * @param {$protobuf.IConversionOptions} [o] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
@@ -315,7 +315,7 @@ export const user = $root.user = (() => {
                     d.name = m.name;
                 }
                 if (m.gender != null && m.hasOwnProperty("gender")) {
-                    d.gender = o.enums === String ? $root.user.v1.Gender[m.gender] : m.gender;
+                    d.gender = o.enums === String ? $root.auth.v1.Gender[m.gender] : m.gender;
                 }
                 if (m.token != null && m.hasOwnProperty("token")) {
                     d.token = m.token;
@@ -326,7 +326,7 @@ export const user = $root.user = (() => {
             /**
              * Converts this User to JSON.
              * @function toJSON
-             * @memberof user.v1.User
+             * @memberof auth.v1.User
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
@@ -337,22 +337,22 @@ export const user = $root.user = (() => {
             return User;
         })();
 
-        v1.GetUserService = (function() {
+        v1.LoginService = (function() {
 
             /**
-             * Properties of a GetUserService.
-             * @memberof user.v1
-             * @interface IGetUserService
+             * Properties of a LoginService.
+             * @memberof auth.v1
+             * @interface ILoginService
              */
 
             /**
-             * Constructs a new GetUserService.
-             * @memberof user.v1
-             * @classdesc Represents a GetUserService.
+             * Constructs a new LoginService.
+             * @memberof auth.v1
+             * @classdesc Represents a LoginService.
              * @constructor
-             * @param {user.v1.IGetUserService=} [p] Properties to set
+             * @param {auth.v1.ILoginService=} [p] Properties to set
              */
-            function GetUserService(p) {
+            function LoginService(p) {
                 if (p)
                     for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                         if (p[ks[i]] != null)
@@ -360,20 +360,20 @@ export const user = $root.user = (() => {
             }
 
             /**
-             * Decodes a GetUserService message from the specified reader or buffer.
+             * Decodes a LoginService message from the specified reader or buffer.
              * @function decode
-             * @memberof user.v1.GetUserService
+             * @memberof auth.v1.LoginService
              * @static
              * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
              * @param {number} [l] Message length if known beforehand
-             * @returns {user.v1.GetUserService} GetUserService
+             * @returns {auth.v1.LoginService} LoginService
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            GetUserService.decode = function decode(r, l) {
+            LoginService.decode = function decode(r, l) {
                 if (!(r instanceof $Reader))
                     r = $Reader.create(r);
-                var c = l === undefined ? r.len : r.pos + l, m = new $root.user.v1.GetUserService();
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.auth.v1.LoginService();
                 while (r.pos < c) {
                     var t = r.uint32();
                     switch (t >>> 3) {
@@ -386,57 +386,58 @@ export const user = $root.user = (() => {
             };
 
             /**
-             * Creates a GetUserService message from a plain object. Also converts values to their respective internal types.
+             * Creates a LoginService message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof user.v1.GetUserService
+             * @memberof auth.v1.LoginService
              * @static
              * @param {Object.<string,*>} d Plain object
-             * @returns {user.v1.GetUserService} GetUserService
+             * @returns {auth.v1.LoginService} LoginService
              */
-            GetUserService.fromObject = function fromObject(d) {
-                if (d instanceof $root.user.v1.GetUserService)
+            LoginService.fromObject = function fromObject(d) {
+                if (d instanceof $root.auth.v1.LoginService)
                     return d;
-                return new $root.user.v1.GetUserService();
+                return new $root.auth.v1.LoginService();
             };
 
             /**
-             * Creates a plain object from a GetUserService message. Also converts values to other types if specified.
+             * Creates a plain object from a LoginService message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof user.v1.GetUserService
+             * @memberof auth.v1.LoginService
              * @static
-             * @param {user.v1.GetUserService} m GetUserService
+             * @param {auth.v1.LoginService} m LoginService
              * @param {$protobuf.IConversionOptions} [o] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            GetUserService.toObject = function toObject() {
+            LoginService.toObject = function toObject() {
                 return {};
             };
 
             /**
-             * Converts this GetUserService to JSON.
+             * Converts this LoginService to JSON.
              * @function toJSON
-             * @memberof user.v1.GetUserService
+             * @memberof auth.v1.LoginService
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
-            GetUserService.prototype.toJSON = function toJSON() {
+            LoginService.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            GetUserService.Request = (function() {
+            LoginService.Request = (function() {
 
                 /**
                  * Properties of a Request.
-                 * @memberof user.v1.GetUserService
+                 * @memberof auth.v1.LoginService
                  * @interface IRequest
+                 * @property {auth.v1.IUser} [user] Request user
                  */
 
                 /**
                  * Constructs a new Request.
-                 * @memberof user.v1.GetUserService
+                 * @memberof auth.v1.LoginService
                  * @classdesc Represents a Request.
                  * @constructor
-                 * @param {user.v1.GetUserService.IRequest=} [p] Properties to set
+                 * @param {auth.v1.LoginService.IRequest=} [p] Properties to set
                  */
                 function Request(p) {
                     if (p)
@@ -446,23 +447,34 @@ export const user = $root.user = (() => {
                 }
 
                 /**
+                 * Request user.
+                 * @member {(auth.v1.IUser|null|undefined)}user
+                 * @memberof auth.v1.LoginService.Request
+                 * @instance
+                 */
+                Request.prototype.user = null;
+
+                /**
                  * Decodes a Request message from the specified reader or buffer.
                  * @function decode
-                 * @memberof user.v1.GetUserService.Request
+                 * @memberof auth.v1.LoginService.Request
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
                  * @param {number} [l] Message length if known beforehand
-                 * @returns {user.v1.GetUserService.Request} Request
+                 * @returns {auth.v1.LoginService.Request} Request
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
                 Request.decode = function decode(r, l) {
                     if (!(r instanceof $Reader))
                         r = $Reader.create(r);
-                    var c = l === undefined ? r.len : r.pos + l, m = new $root.user.v1.GetUserService.Request();
+                    var c = l === undefined ? r.len : r.pos + l, m = new $root.auth.v1.LoginService.Request();
                     while (r.pos < c) {
                         var t = r.uint32();
                         switch (t >>> 3) {
+                        case 1:
+                            m.user = $root.auth.v1.User.decode(r, r.uint32());
+                            break;
                         default:
                             r.skipType(t & 7);
                             break;
@@ -474,34 +486,49 @@ export const user = $root.user = (() => {
                 /**
                  * Creates a Request message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
-                 * @memberof user.v1.GetUserService.Request
+                 * @memberof auth.v1.LoginService.Request
                  * @static
                  * @param {Object.<string,*>} d Plain object
-                 * @returns {user.v1.GetUserService.Request} Request
+                 * @returns {auth.v1.LoginService.Request} Request
                  */
                 Request.fromObject = function fromObject(d) {
-                    if (d instanceof $root.user.v1.GetUserService.Request)
+                    if (d instanceof $root.auth.v1.LoginService.Request)
                         return d;
-                    return new $root.user.v1.GetUserService.Request();
+                    var m = new $root.auth.v1.LoginService.Request();
+                    if (d.user != null) {
+                        if (typeof d.user !== "object")
+                            throw TypeError(".auth.v1.LoginService.Request.user: object expected");
+                        m.user = $root.auth.v1.User.fromObject(d.user);
+                    }
+                    return m;
                 };
 
                 /**
                  * Creates a plain object from a Request message. Also converts values to other types if specified.
                  * @function toObject
-                 * @memberof user.v1.GetUserService.Request
+                 * @memberof auth.v1.LoginService.Request
                  * @static
-                 * @param {user.v1.GetUserService.Request} m Request
+                 * @param {auth.v1.LoginService.Request} m Request
                  * @param {$protobuf.IConversionOptions} [o] Conversion options
                  * @returns {Object.<string,*>} Plain object
                  */
-                Request.toObject = function toObject() {
-                    return {};
+                Request.toObject = function toObject(m, o) {
+                    if (!o)
+                        o = {};
+                    var d = {};
+                    if (o.defaults) {
+                        d.user = null;
+                    }
+                    if (m.user != null && m.hasOwnProperty("user")) {
+                        d.user = $root.auth.v1.User.toObject(m.user, o);
+                    }
+                    return d;
                 };
 
                 /**
                  * Converts this Request to JSON.
                  * @function toJSON
-                 * @memberof user.v1.GetUserService.Request
+                 * @memberof auth.v1.LoginService.Request
                  * @instance
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -512,65 +539,179 @@ export const user = $root.user = (() => {
                 return Request;
             })();
 
-            return GetUserService;
+            LoginService.Response = (function() {
+
+                /**
+                 * Properties of a Response.
+                 * @memberof auth.v1.LoginService
+                 * @interface IResponse
+                 * @property {string} [token] Response token
+                 */
+
+                /**
+                 * Constructs a new Response.
+                 * @memberof auth.v1.LoginService
+                 * @classdesc Represents a Response.
+                 * @constructor
+                 * @param {auth.v1.LoginService.IResponse=} [p] Properties to set
+                 */
+                function Response(p) {
+                    if (p)
+                        for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                            if (p[ks[i]] != null)
+                                this[ks[i]] = p[ks[i]];
+                }
+
+                /**
+                 * Response token.
+                 * @member {string}token
+                 * @memberof auth.v1.LoginService.Response
+                 * @instance
+                 */
+                Response.prototype.token = "";
+
+                /**
+                 * Decodes a Response message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof auth.v1.LoginService.Response
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+                 * @param {number} [l] Message length if known beforehand
+                 * @returns {auth.v1.LoginService.Response} Response
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                Response.decode = function decode(r, l) {
+                    if (!(r instanceof $Reader))
+                        r = $Reader.create(r);
+                    var c = l === undefined ? r.len : r.pos + l, m = new $root.auth.v1.LoginService.Response();
+                    while (r.pos < c) {
+                        var t = r.uint32();
+                        switch (t >>> 3) {
+                        case 1:
+                            m.token = r.string();
+                            break;
+                        default:
+                            r.skipType(t & 7);
+                            break;
+                        }
+                    }
+                    return m;
+                };
+
+                /**
+                 * Creates a Response message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof auth.v1.LoginService.Response
+                 * @static
+                 * @param {Object.<string,*>} d Plain object
+                 * @returns {auth.v1.LoginService.Response} Response
+                 */
+                Response.fromObject = function fromObject(d) {
+                    if (d instanceof $root.auth.v1.LoginService.Response)
+                        return d;
+                    var m = new $root.auth.v1.LoginService.Response();
+                    if (d.token != null) {
+                        m.token = String(d.token);
+                    }
+                    return m;
+                };
+
+                /**
+                 * Creates a plain object from a Response message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof auth.v1.LoginService.Response
+                 * @static
+                 * @param {auth.v1.LoginService.Response} m Response
+                 * @param {$protobuf.IConversionOptions} [o] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                Response.toObject = function toObject(m, o) {
+                    if (!o)
+                        o = {};
+                    var d = {};
+                    if (o.defaults) {
+                        d.token = "";
+                    }
+                    if (m.token != null && m.hasOwnProperty("token")) {
+                        d.token = m.token;
+                    }
+                    return d;
+                };
+
+                /**
+                 * Converts this Response to JSON.
+                 * @function toJSON
+                 * @memberof auth.v1.LoginService.Response
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                Response.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return Response;
+            })();
+
+            return LoginService;
         })();
 
-        v1.UserService = (function() {
+        v1.AuthService = (function() {
 
             /**
-             * Constructs a new UserService service.
-             * @memberof user.v1
-             * @classdesc Represents a UserService
+             * Constructs a new AuthService service.
+             * @memberof auth.v1
+             * @classdesc Represents an AuthService
              * @extends $protobuf.rpc.Service
              * @constructor
              * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
              * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
              * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
              */
-            function UserService(rpcImpl, requestDelimited, responseDelimited) {
+            function AuthService(rpcImpl, requestDelimited, responseDelimited) {
                 $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
             }
 
-            (UserService.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = UserService;
+            (AuthService.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = AuthService;
 
             /**
-             * Callback as used by {@link user.v1.UserService#getUser}.
-             * @memberof user.v1.UserService
-             * @typedef GetUserCallback
+             * Callback as used by {@link auth.v1.AuthService#login}.
+             * @memberof auth.v1.AuthService
+             * @typedef LoginCallback
              * @type {function}
              * @param {Error|null} error Error, if any
-             * @param {user.v1.UserEntity} [response] UserEntity
+             * @param {auth.v1.LoginService.Response} [response] Response
              */
 
             /**
-             * Calls GetUser.
-             * @function .getUser
-             * @memberof user.v1.UserService
+             * Calls Login.
+             * @function .login
+             * @memberof auth.v1.AuthService
              * @instance
-             * @param {user.v1.GetUserService.IRequest} request Request message or plain object
-             * @param {user.v1.UserService.GetUserCallback} callback Node-style callback called with the error, if any, and UserEntity
+             * @param {auth.v1.LoginService.IRequest} request Request message or plain object
+             * @param {auth.v1.AuthService.LoginCallback} callback Node-style callback called with the error, if any, and Response
              * @returns {undefined}
              * @variation 1
              */
-            UserService.prototype.getUser = function getUser(request, callback) {
-                return this.rpcCall(getUser, $root.user.v1.GetUserService.Request, $root.user.v1.UserEntity, request, callback);
+            AuthService.prototype.login = function login(request, callback) {
+                return this.rpcCall(login, $root.auth.v1.LoginService.Request, $root.auth.v1.LoginService.Response, request, callback);
             };
 
             /**
-             * Calls GetUser.
-             * @function getUser
-             * @memberof user.v1.UserService
+             * Calls Login.
+             * @function login
+             * @memberof auth.v1.AuthService
              * @instance
-             * @param {user.v1.GetUserService.IRequest} request Request message or plain object
-             * @returns {Promise<user.v1.UserEntity>} Promise
+             * @param {auth.v1.LoginService.IRequest} request Request message or plain object
+             * @returns {Promise<auth.v1.LoginService.Response>} Promise
              * @variation 2
              */
 
-            return UserService;
+            return AuthService;
         })();
 
         return v1;
     })();
 
-    return user;
+    return auth;
 })();

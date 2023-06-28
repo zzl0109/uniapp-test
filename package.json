@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "gateway": "cd server && go run src/service/gateway/main.go",
     "message": "cd server && go run src/service/message/main.go",
-    "user": "cd server && go run src/service/user/main.go"
+    "user": "cd server && go run src/service/user/main.go",
+    "auth": "cd server && go run src/service/auth/main.go"
   },
   "keywords": [],
   "author": "",

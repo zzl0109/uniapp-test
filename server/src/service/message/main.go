@@ -18,7 +18,7 @@ import (
 
 var addr = flag.String("addr", ":8081", "address to listen")
 var wsAddr = flag.String("ws_url", ":9090", "address for websocket")
-var authPublicKeyFile = flag.String("auth_public_key_file", "src/service/user/public.key", "auth public key file")
+var authPublicKeyFile = flag.String("auth_public_key_file", "src/service/auth/public.key", "auth public key file")
 var mysqlAddr = flag.String("mysql_addr", "118.89.93.58:3306", "mysql address")
 
 func main() {
@@ -42,7 +42,7 @@ func main() {
 	}
 	messageClient := messagepb.NewMessageServiceClient(conn)
 
-	http.HandleFunc("/ws", ws.Handler(u, messageClient, logger))
+	http.HandleFunc("/chat", ws.Handler(u, messageClient, logger))
 	go func() {
 		logger.Info("websocket服务已启动", zap.String("addr", *wsAddr))
 		err := http.ListenAndServe(*wsAddr, nil)

@@ -2,6 +2,7 @@ package ws
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	messagepb "qiji/src/service/message/api/gen/v1"
 
@@ -12,9 +13,9 @@ import (
 func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient, logger *zap.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
-		id := query.Get("id")
+		sessionId := query.Get("session_id")
 
-		logger.Info("socket server started", zap.Any("id", id))
+		logger.Info("socket server started", zap.Any("sessionId", sessionId))
 		c, err := u.Upgrade(w, r, nil)
 		if err != nil {
 			logger.Warn("升级websocket失败", zap.Error(err))
@@ -42,8 +43,13 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 				}
 
 				logger.Info("收到消息 %s", zap.String("msg", string(p)))
+				var message messagepb.SendMessageService_Request
+				json.Unmarshal(p, &message)
+
 				err = ms.Send(&messagepb.SendMessageService_Request{
-					Content: string(p),
+					Content:     message.Content,
+					SessionId:   message.SessionId,
+					SessionType: message.SessionType,
 				})
 				if err != nil {
 					logger.Error("流式服务发送消息失败", zap.Error(err))

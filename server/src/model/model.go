@@ -2,6 +2,14 @@ package model
 
 import mysqlConst "qiji/src/shared/mysql"
 
+// 用户表
+type User struct {
+	mysqlConst.BaseModel
+	Name   string `gorm:"column:name; not nul;index"`
+	Gender int    `gorm:"column:gender; default:1;comment:\"0:未指定 1:男 2:女\""`
+	Token  string `gorm:"column:token; type:text"`
+}
+
 // 群组表
 type Group struct {
 	mysqlConst.BaseModel

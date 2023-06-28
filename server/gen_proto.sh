@@ -26,3 +26,4 @@ function genProto {
 
 genProto message
 genProto user
+genProto auth

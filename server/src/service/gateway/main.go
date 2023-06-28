@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	authpb "qiji/src/service/auth/api/gen/v1"
 	messagepb "qiji/src/service/message/api/gen/v1"
 	userpb "qiji/src/service/user/api/gen/v1"
 	"qiji/src/shared/server"
@@ -21,6 +22,7 @@ import (
 var httpAddr = flag.String("http_addr", ":8888", "address to listen")
 var msgAddr = flag.String("msg_addr", "localhost:8081", "address for message service")
 var userAddr = flag.String("user_addr", "localhost:8082", "address for user service")
+var authAddr = flag.String("auth_addr", "localhost:8083", "address for auth service")
 
 func main() {
 	flag.Parse()
@@ -55,6 +57,11 @@ func main() {
 			name:         "user",
 			addr:         *userAddr,
 			registerFunc: userpb.RegisterUserServiceHandlerFromEndpoint,
+		},
+		{
+			name:         "auth",
+			addr:         *authAddr,
+			registerFunc: authpb.RegisterAuthServiceHandlerFromEndpoint,
 		},
 	}
 

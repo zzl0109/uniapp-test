@@ -21,26 +21,10 @@ message User {
     string token = 3;
 }
 
-message CreateUserService {
-    message Request {
-        User user = 1;
-    }
-}
-
 message GetUserService {
-    message Request {
-        int32 id = 1;
-    }
-}
-
-message LoginService {
-    message Response {
-        string token = 1;
-    }
+    message Request {}
 }
 
 service UserService {
-    rpc CreateUser(CreateUserService.Request) returns (UserEntity);
     rpc GetUser(GetUserService.Request) returns (UserEntity);
-    rpc Login(CreateUserService.Request) returns (LoginService.Response);
 }

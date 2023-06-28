@@ -26,6 +26,9 @@
 		routing
 	} from '../../router';
 	import {
+		AuthService
+	} from '../../service/auth';
+	import {
 		Qiji
 	} from '../../service/request';
 	import {
@@ -78,7 +81,7 @@
 
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules);
-			UserService.GetUser(1)
+			UserService.GetUser()
 				.then((res) => {
 					console.log(res, 'GetUser res');
 				})
@@ -120,7 +123,7 @@
 					.then((res) => {
 						this.submitting = true;
 						const userInfo = this.model1.userInfo || {};
-						UserService.Login({
+						AuthService.Login({
 								user: {
 									name: userInfo.name,
 									gender: userInfo.sexValue,

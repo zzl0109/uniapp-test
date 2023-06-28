@@ -1,9 +1,7 @@
 package dao
 
 import (
-	"context"
 	"fmt"
-	"qiji/src/model"
 	userpb "qiji/src/service/user/api/gen/v1"
 	mysqlConst "qiji/src/shared/mysql"
 
@@ -33,36 +31,6 @@ func NewMysql(host string) *Mysql {
 	}
 }
 
-func (m *Mysql) CreateUser(user *userpb.User) (*userpb.UserEntity, error) {
-	record := &User{}
-	res := m.db.First(record, "name = ?", user.Name)
-	if res.RowsAffected != 0 {
-		return &userpb.UserEntity{
-			Id: int32(record.ID),
-			User: &userpb.User{
-				Name:   record.Name,
-				Gender: userpb.Gender(record.Gender),
-				Token:  record.Token,
-			},
-		}, fmt.Errorf("用户已存在")
-	}
-
-	newUser := &User{
-		Name:   user.Name,
-		Gender: int(user.Gender),
-	}
-
-	res = m.db.Create(&newUser)
-	if res.Error != nil {
-		return nil, res.Error
-	}
-
-	return &userpb.UserEntity{
-		Id:   int32(newUser.ID),
-		User: user,
-	}, nil
-}
-
 func (m *Mysql) GetUser(id int) (*userpb.UserEntity, error) {
 	var userRecord = &User{}
 
@@ -80,56 +48,4 @@ func (m *Mysql) GetUser(id int) (*userpb.UserEntity, error) {
 			Token:  userRecord.Token,
 		},
 	}, nil
-}
-
-func (m *Mysql) UpdateUser(user *userpb.User, userId int) error {
-	var updateUser = &User{
-		Token: user.Token,
-	}
-	updateUser.ID = uint(userId)
-
-	// db.Model(&user).Update("name", "hello")
-
-	m.db.Model(updateUser).Update("token", updateUser.Token)
-
-	// res := m.db.First(updateUser, userId)
-	// if res.Error != nil {
-	// 	return res.Error
-	// }
-	// updateUser.Token = user.Token
-	// m.db.Model(updateUser).Update("token", updateUser.Token).Save(updateUser)
-	// m.db.Save(updateUser)
-
-	return nil
-	// d := m.db.Model(updateUser).Updates(updateUser)
-
-	// res = m.db.Create(&newUser)
-	// if res.Error != nil {
-	// 	return nil, res.Error
-	// }
-
-	// return &userpb.UserEntity{
-	// 	Id:   int32(newUser.ID),
-	// 	User: user,
-	// }, nil
-}
-
-func (m *Mysql) HandleAddUserToGroups(c context.Context, userId int) error {
-	var groups []*model.Group
-	res := m.db.Limit(10).Find(&groups)
-	if res.Error != nil {
-		return res.Error
-	}
-
-	var groupMembers []*model.GroupMember
-
-	for _, v := range groups {
-		groupMembers = append(groupMembers, &model.GroupMember{
-			GroupId: v.ID,
-			UserId:  uint(userId),
-		})
-	}
-	m.db.Create(groupMembers)
-
-	return nil
 }

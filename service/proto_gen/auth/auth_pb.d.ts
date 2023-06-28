@@ -1,7 +1,7 @@
 import * as $protobuf from "protobufjs";
 
-/** Namespace user. */
-export namespace user {
+/** Namespace auth. */
+export namespace auth {
 
     /** Namespace v1. */
     namespace v1 {
@@ -20,7 +20,7 @@ export namespace user {
             id?: number;
 
             /** UserEntity user */
-            user?: user.v1.IUser;
+            user?: auth.v1.IUser;
         }
 
         /** Represents a UserEntity. */
@@ -30,13 +30,13 @@ export namespace user {
              * Constructs a new UserEntity.
              * @param [p] Properties to set
              */
-            constructor(p?: user.v1.IUserEntity);
+            constructor(p?: auth.v1.IUserEntity);
 
             /** UserEntity id. */
             public id: number;
 
             /** UserEntity user. */
-            public user?: (user.v1.IUser|null);
+            public user?: (auth.v1.IUser|null);
 
             /**
              * Decodes a UserEntity message from the specified reader or buffer.
@@ -46,14 +46,14 @@ export namespace user {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): user.v1.UserEntity;
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): auth.v1.UserEntity;
 
             /**
              * Creates a UserEntity message from a plain object. Also converts values to their respective internal types.
              * @param d Plain object
              * @returns UserEntity
              */
-            public static fromObject(d: { [k: string]: any }): user.v1.UserEntity;
+            public static fromObject(d: { [k: string]: any }): auth.v1.UserEntity;
 
             /**
              * Creates a plain object from a UserEntity message. Also converts values to other types if specified.
@@ -61,7 +61,7 @@ export namespace user {
              * @param [o] Conversion options
              * @returns Plain object
              */
-            public static toObject(m: user.v1.UserEntity, o?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(m: auth.v1.UserEntity, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
              * Converts this UserEntity to JSON.
@@ -77,7 +77,7 @@ export namespace user {
             name?: string;
 
             /** User gender */
-            gender?: user.v1.Gender;
+            gender?: auth.v1.Gender;
 
             /** User token */
             token?: string;
@@ -90,13 +90,13 @@ export namespace user {
              * Constructs a new User.
              * @param [p] Properties to set
              */
-            constructor(p?: user.v1.IUser);
+            constructor(p?: auth.v1.IUser);
 
             /** User name. */
             public name: string;
 
             /** User gender. */
-            public gender: user.v1.Gender;
+            public gender: auth.v1.Gender;
 
             /** User token. */
             public token: string;
@@ -109,14 +109,14 @@ export namespace user {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): user.v1.User;
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): auth.v1.User;
 
             /**
              * Creates a User message from a plain object. Also converts values to their respective internal types.
              * @param d Plain object
              * @returns User
              */
-            public static fromObject(d: { [k: string]: any }): user.v1.User;
+            public static fromObject(d: { [k: string]: any }): auth.v1.User;
 
             /**
              * Creates a plain object from a User message. Also converts values to other types if specified.
@@ -124,7 +124,7 @@ export namespace user {
              * @param [o] Conversion options
              * @returns Plain object
              */
-            public static toObject(m: user.v1.User, o?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(m: auth.v1.User, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
              * Converts this User to JSON.
@@ -133,55 +133,58 @@ export namespace user {
             public toJSON(): { [k: string]: any };
         }
 
-        /** Properties of a GetUserService. */
-        interface IGetUserService {
+        /** Properties of a LoginService. */
+        interface ILoginService {
         }
 
-        /** Represents a GetUserService. */
-        class GetUserService {
+        /** Represents a LoginService. */
+        class LoginService {
 
             /**
-             * Constructs a new GetUserService.
+             * Constructs a new LoginService.
              * @param [p] Properties to set
              */
-            constructor(p?: user.v1.IGetUserService);
+            constructor(p?: auth.v1.ILoginService);
 
             /**
-             * Decodes a GetUserService message from the specified reader or buffer.
+             * Decodes a LoginService message from the specified reader or buffer.
              * @param r Reader or buffer to decode from
              * @param [l] Message length if known beforehand
-             * @returns GetUserService
+             * @returns LoginService
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): user.v1.GetUserService;
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): auth.v1.LoginService;
 
             /**
-             * Creates a GetUserService message from a plain object. Also converts values to their respective internal types.
+             * Creates a LoginService message from a plain object. Also converts values to their respective internal types.
              * @param d Plain object
-             * @returns GetUserService
+             * @returns LoginService
              */
-            public static fromObject(d: { [k: string]: any }): user.v1.GetUserService;
+            public static fromObject(d: { [k: string]: any }): auth.v1.LoginService;
 
             /**
-             * Creates a plain object from a GetUserService message. Also converts values to other types if specified.
-             * @param m GetUserService
+             * Creates a plain object from a LoginService message. Also converts values to other types if specified.
+             * @param m LoginService
              * @param [o] Conversion options
              * @returns Plain object
              */
-            public static toObject(m: user.v1.GetUserService, o?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(m: auth.v1.LoginService, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this GetUserService to JSON.
+             * Converts this LoginService to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
         }
 
-        namespace GetUserService {
+        namespace LoginService {
 
             /** Properties of a Request. */
             interface IRequest {
+
+                /** Request user */
+                user?: auth.v1.IUser;
             }
 
             /** Represents a Request. */
@@ -191,7 +194,10 @@ export namespace user {
                  * Constructs a new Request.
                  * @param [p] Properties to set
                  */
-                constructor(p?: user.v1.GetUserService.IRequest);
+                constructor(p?: auth.v1.LoginService.IRequest);
+
+                /** Request user. */
+                public user?: (auth.v1.IUser|null);
 
                 /**
                  * Decodes a Request message from the specified reader or buffer.
@@ -201,14 +207,14 @@ export namespace user {
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
-                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): user.v1.GetUserService.Request;
+                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): auth.v1.LoginService.Request;
 
                 /**
                  * Creates a Request message from a plain object. Also converts values to their respective internal types.
                  * @param d Plain object
                  * @returns Request
                  */
-                public static fromObject(d: { [k: string]: any }): user.v1.GetUserService.Request;
+                public static fromObject(d: { [k: string]: any }): auth.v1.LoginService.Request;
 
                 /**
                  * Creates a plain object from a Request message. Also converts values to other types if specified.
@@ -216,7 +222,7 @@ export namespace user {
                  * @param [o] Conversion options
                  * @returns Plain object
                  */
-                public static toObject(m: user.v1.GetUserService.Request, o?: $protobuf.IConversionOptions): { [k: string]: any };
+                public static toObject(m: auth.v1.LoginService.Request, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
                 /**
                  * Converts this Request to JSON.
@@ -224,13 +230,64 @@ export namespace user {
                  */
                 public toJSON(): { [k: string]: any };
             }
+
+            /** Properties of a Response. */
+            interface IResponse {
+
+                /** Response token */
+                token?: string;
+            }
+
+            /** Represents a Response. */
+            class Response {
+
+                /**
+                 * Constructs a new Response.
+                 * @param [p] Properties to set
+                 */
+                constructor(p?: auth.v1.LoginService.IResponse);
+
+                /** Response token. */
+                public token: string;
+
+                /**
+                 * Decodes a Response message from the specified reader or buffer.
+                 * @param r Reader or buffer to decode from
+                 * @param [l] Message length if known beforehand
+                 * @returns Response
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): auth.v1.LoginService.Response;
+
+                /**
+                 * Creates a Response message from a plain object. Also converts values to their respective internal types.
+                 * @param d Plain object
+                 * @returns Response
+                 */
+                public static fromObject(d: { [k: string]: any }): auth.v1.LoginService.Response;
+
+                /**
+                 * Creates a plain object from a Response message. Also converts values to other types if specified.
+                 * @param m Response
+                 * @param [o] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(m: auth.v1.LoginService.Response, o?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this Response to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+            }
         }
 
-        /** Represents a UserService */
-        class UserService extends $protobuf.rpc.Service {
+        /** Represents an AuthService */
+        class AuthService extends $protobuf.rpc.Service {
 
             /**
-             * Constructs a new UserService service.
+             * Constructs a new AuthService service.
              * @param rpcImpl RPC implementation
              * @param [requestDelimited=false] Whether requests are length-delimited
              * @param [responseDelimited=false] Whether responses are length-delimited
@@ -238,28 +295,28 @@ export namespace user {
             constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
 
             /**
-             * Calls GetUser.
+             * Calls Login.
              * @param request Request message or plain object
-             * @param callback Node-style callback called with the error, if any, and UserEntity
+             * @param callback Node-style callback called with the error, if any, and Response
              */
-            public getUser(request: user.v1.GetUserService.IRequest, callback: user.v1.UserService.GetUserCallback): void;
+            public login(request: auth.v1.LoginService.IRequest, callback: auth.v1.AuthService.LoginCallback): void;
 
             /**
-             * Calls GetUser.
+             * Calls Login.
              * @param request Request message or plain object
              * @returns Promise
              */
-            public getUser(request: user.v1.GetUserService.IRequest): Promise<user.v1.UserEntity>;
+            public login(request: auth.v1.LoginService.IRequest): Promise<auth.v1.LoginService.Response>;
         }
 
-        namespace UserService {
+        namespace AuthService {
 
             /**
-             * Callback as used by {@link user.v1.UserService#getUser}.
+             * Callback as used by {@link auth.v1.AuthService#login}.
              * @param error Error, if any
-             * @param [response] UserEntity
+             * @param [response] Response
              */
-            type GetUserCallback = (error: (Error|null), response?: user.v1.UserEntity) => void;
+            type LoginCallback = (error: (Error|null), response?: auth.v1.LoginService.Response) => void;
         }
     }
 }

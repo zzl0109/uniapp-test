@@ -10,18 +10,9 @@ export namespace UserService {
 	// 	})
 	// }
 
-	export const Login = (data : any) => {
+	export const GetUser = () => {
 		return Qiji.sendRequest<any, any>({
-			path: '/v1/user/login',
-			method: 'POST',
-			data: data,
-			responseMarshaller: (r : any) => r
-		})
-	}
-
-	export const GetUser = (id : number) => {
-		return Qiji.sendRequest<any, any>({
-			path: `/v1/user/${id}`,
+			path: `/v1/user`,
 			method: 'GET',
 			responseMarshaller: (r : any) => r
 		})

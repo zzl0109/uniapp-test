@@ -4,6 +4,7 @@ import (
 	"context"
 	"qiji/src/shared/auth/token"
 	"qiji/src/shared/id"
+	"strconv"
 
 	"fmt"
 	"io"
@@ -61,8 +62,13 @@ func (i *interceptor) HandleReq(ctx context.Context, req interface{}, info *grpc
 		return nil, status.Error(codes.Unauthenticated, "")
 	}
 
-	userId, verifyErr := i.verifier.Verify(token)
+	userIdStr, verifyErr := i.verifier.Verify(token)
 	// fmt.Printf("uid from token: %s \n", userId)
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 
 	if verifyErr != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "token 过期 %v", verifyErr)
@@ -104,7 +110,7 @@ func UserIdFromContext(c context.Context) (id.UserId, error) {
 	v := c.Value(userIdKey{})
 	userId, ok := v.(id.UserId)
 	if !ok {
-		return "", status.Error(codes.Unauthenticated, "")
+		return 0, status.Error(codes.Unauthenticated, "")
 	}
 	return userId, nil
 }
