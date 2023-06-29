@@ -12,6 +12,22 @@ message StreamMessageResponse {
     string message = 1;
 }
 
+enum Gender {
+    gender_not_specified = 0;
+    male = 1;
+    female = 2;
+}
+message User {
+    string name = 1;
+    Gender gender = 2;
+    string token = 3;
+}
+
+message UserEntity {
+    int32 id = 1;
+    User user = 2;
+}
+
 message Message {
     int32 id = 1;
     // 消息内容
@@ -20,6 +36,7 @@ message Message {
     int32 sender_id = 3;
     // 消息发送时间（s）
     int32 send_time_second = 4;
+    UserEntity sender_info = 5;
 }
 
 enum SessionType {
@@ -30,10 +47,21 @@ enum SessionType {
     group = 2;
 }
 
-message GetMessageListSerivce {
+enum MessageQueryDirection {
+    not_specified = 0;
+    // 以前
+    before = 1;
+    // 以后
+    after = 2; 
+}
+
+message GetMessageListService {
     message Request {
         // 会话id
         int32 session_id = 1;
+        // 基于哪条消息id开始查询
+        int32 message_id = 2;
+        MessageQueryDirection  direction = 3;
     }
     message Response {
         repeated Message message_list = 1;
@@ -69,9 +97,18 @@ message GetSessionListService {
     }
 }
 
+message GetSessionRequest {
+    int32 id = 1;
+}
+
+message GetSessionResponse {
+    GetSessionListService.SessionInfo session = 1;
+}
+
 service MessageService {
     rpc StreamMessage (stream StreamMessageRequest) returns (stream StreamMessageResponse) {}
-    rpc GetMessageList(GetMessageListSerivce.Request) returns (GetMessageListSerivce.Response);  
+    rpc GetMessageList(GetMessageListService.Request) returns (GetMessageListService.Response);  
     rpc SendMessage(stream SendMessageService.Request) returns (stream Message);  
     rpc GetSessionList(GetSessionListService.Request) returns (GetSessionListService.Response);  
+    rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
 }

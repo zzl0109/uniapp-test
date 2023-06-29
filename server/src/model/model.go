@@ -27,7 +27,7 @@ type GroupMember struct {
 // 消息表
 type Message struct {
 	mysqlConst.BaseModel
-	SenderId    uint `gorm:"column:sender_id;not null;"`
-	RecipientId uint `gorm:"column:recipient_id;not null;"`
-	Content     uint `gorm:"column:content;not null;"`
+	SenderId    uint   `gorm:"column:sender_id;not null;"`
+	RecipientId uint   `gorm:"column:recipient_id;not null;"`
+	Content     string `gorm:"column:content;not null;"`
 }

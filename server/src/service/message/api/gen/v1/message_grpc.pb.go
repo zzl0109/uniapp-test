@@ -23,6 +23,7 @@ const (
 	MessageService_GetMessageList_FullMethodName = "/message.v1.MessageService/GetMessageList"
 	MessageService_SendMessage_FullMethodName    = "/message.v1.MessageService/SendMessage"
 	MessageService_GetSessionList_FullMethodName = "/message.v1.MessageService/GetSessionList"
+	MessageService_GetSession_FullMethodName     = "/message.v1.MessageService/GetSession"
 )
 
 // MessageServiceClient is the client API for MessageService service.
@@ -30,9 +31,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageServiceClient interface {
 	StreamMessage(ctx context.Context, opts ...grpc.CallOption) (MessageService_StreamMessageClient, error)
-	GetMessageList(ctx context.Context, in *GetMessageListSerivce_Request, opts ...grpc.CallOption) (*GetMessageListSerivce_Response, error)
+	GetMessageList(ctx context.Context, in *GetMessageListService_Request, opts ...grpc.CallOption) (*GetMessageListService_Response, error)
 	SendMessage(ctx context.Context, opts ...grpc.CallOption) (MessageService_SendMessageClient, error)
 	GetSessionList(ctx context.Context, in *GetSessionListService_Request, opts ...grpc.CallOption) (*GetSessionListService_Response, error)
+	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 }
 
 type messageServiceClient struct {
@@ -74,8 +76,8 @@ func (x *messageServiceStreamMessageClient) Recv() (*StreamMessageResponse, erro
 	return m, nil
 }
 
-func (c *messageServiceClient) GetMessageList(ctx context.Context, in *GetMessageListSerivce_Request, opts ...grpc.CallOption) (*GetMessageListSerivce_Response, error) {
-	out := new(GetMessageListSerivce_Response)
+func (c *messageServiceClient) GetMessageList(ctx context.Context, in *GetMessageListService_Request, opts ...grpc.CallOption) (*GetMessageListService_Response, error) {
+	out := new(GetMessageListService_Response)
 	err := c.cc.Invoke(ctx, MessageService_GetMessageList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -123,14 +125,24 @@ func (c *messageServiceClient) GetSessionList(ctx context.Context, in *GetSessio
 	return out, nil
 }
 
+func (c *messageServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error) {
+	out := new(GetSessionResponse)
+	err := c.cc.Invoke(ctx, MessageService_GetSession_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServiceServer is the server API for MessageService service.
 // All implementations should embed UnimplementedMessageServiceServer
 // for forward compatibility
 type MessageServiceServer interface {
 	StreamMessage(MessageService_StreamMessageServer) error
-	GetMessageList(context.Context, *GetMessageListSerivce_Request) (*GetMessageListSerivce_Response, error)
+	GetMessageList(context.Context, *GetMessageListService_Request) (*GetMessageListService_Response, error)
 	SendMessage(MessageService_SendMessageServer) error
 	GetSessionList(context.Context, *GetSessionListService_Request) (*GetSessionListService_Response, error)
+	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 }
 
 // UnimplementedMessageServiceServer should be embedded to have forward compatible implementations.
@@ -140,7 +152,7 @@ type UnimplementedMessageServiceServer struct {
 func (UnimplementedMessageServiceServer) StreamMessage(MessageService_StreamMessageServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamMessage not implemented")
 }
-func (UnimplementedMessageServiceServer) GetMessageList(context.Context, *GetMessageListSerivce_Request) (*GetMessageListSerivce_Response, error) {
+func (UnimplementedMessageServiceServer) GetMessageList(context.Context, *GetMessageListService_Request) (*GetMessageListService_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMessageList not implemented")
 }
 func (UnimplementedMessageServiceServer) SendMessage(MessageService_SendMessageServer) error {
@@ -148,6 +160,9 @@ func (UnimplementedMessageServiceServer) SendMessage(MessageService_SendMessageS
 }
 func (UnimplementedMessageServiceServer) GetSessionList(context.Context, *GetSessionListService_Request) (*GetSessionListService_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSessionList not implemented")
+}
+func (UnimplementedMessageServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
 }
 
 // UnsafeMessageServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -188,7 +203,7 @@ func (x *messageServiceStreamMessageServer) Recv() (*StreamMessageRequest, error
 }
 
 func _MessageService_GetMessageList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMessageListSerivce_Request)
+	in := new(GetMessageListService_Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -200,7 +215,7 @@ func _MessageService_GetMessageList_Handler(srv interface{}, ctx context.Context
 		FullMethod: MessageService_GetMessageList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageServiceServer).GetMessageList(ctx, req.(*GetMessageListSerivce_Request))
+		return srv.(MessageServiceServer).GetMessageList(ctx, req.(*GetMessageListService_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -249,6 +264,24 @@ func _MessageService_GetSessionList_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).GetSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_GetSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -263,6 +296,10 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSessionList",
 			Handler:    _MessageService_GetSessionList_Handler,
+		},
+		{
+			MethodName: "GetSession",
+			Handler:    _MessageService_GetSession_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

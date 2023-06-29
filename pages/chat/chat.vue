@@ -1,9 +1,10 @@
 <template>
 	<view class="pageWrapper safe-area-inset-bottom">
 		<view class="page">
-			<scroll-view class="messageContainer" scroll-y :scroll-top="scrollTop" @scroll="handleScrollY">
+			<scroll-view class="messageContainer" scroll-y :scroll-top="scrollTop" @scroll="handleScrollY"
+				@scrolltoupper="handleScrollToUpper" @scrolltolower="handleScrollToLower">
 				<view v-for="(i, index) in messageList" :key="index" class="message">
-					<Message :messageInfo="i" :isOwn="i.user_id === userInfo.id"></Message>
+					<Message :messageInfo="i" :isOwn="i.sender_id === userInfo.id"></Message>
 				</view>
 			</scroll-view>
 			<view class="sendBtnWrapper">
@@ -44,65 +45,13 @@
 				handleSendMessage: (m) => {},
 				input: '',
 				sessionId: 0,
+				sessionInfo: {},
 				scrollTop: 999999,
 				old: {
 					scrollTop: 0,
 				},
-				messageList: [{
-						user_id: 123,
-						avatar: '',
-						user_name: '李四',
-						content: '天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎天王盖地虎',
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '王五',
-						content: '宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖宝塔镇河妖',
-					},
-					{
-						user_id: 123,
-						avatar: '',
-						user_name: '李四',
-						content: '666',
-					},
-					{
-						user_id: 123,
-						avatar: '',
-						user_name: '李四',
-						content: '找到组织了！！',
-					},
-					{
-						user_id: 123,
-						avatar: '',
-						user_name: '李四',
-						content: '666',
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '王五',
-						content: '哈哈哈哈哈 你也是段友？',
-					},
-					{
-						user_id: 123,
-						avatar: '',
-						user_name: '李四',
-						content: '嗯呢',
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '王五',
-						content: '666',
-					},
-					{
-						user_id: 109,
-						avatar: '',
-						user_name: '王五',
-						content: '666',
-					},
-				],
+				messageList: [],
+				messageFetching: false,
 			};
 		},
 		computed: {
@@ -112,18 +61,66 @@
 			Message,
 		},
 		onLoad(query) {
-			console.log(this.userInfo, this.userInfo.id, 'userInfo');
-			console.log(query, 'query');
-			this.sessionId = query?.sessionId || 0;
+			this.sessionId = Number(query?.sessionId || 0);
 			this.handleSendMessage = MessageSerivce.JoinChat(
 				query?.sessionId,
 				this.handleReceiveMessage
 			);
+
+			this.handleGetMessageList(0, message.v1.MessageQueryDirection.after, true)
+
+			MessageSerivce.GetGroup(this.sessionId).then(res => {
+				this.sessionInfo = res.session;
+				uni.setNavigationBarTitle({
+					title: res.session.name
+				})
+			}).catch(err => {
+				console.error(err, 'GetGroup err');
+			})
 		},
 		onUnload() {
 			uni.closeSocket();
 		},
 		methods: {
+			handleScrollToUpper() {
+				console.log("upper");
+				this.handleGetMessageList(this.messageList[0].id, message.v1.MessageQueryDirection.before)
+			},
+
+			handleScrollToLower() {
+				console.log('lower');
+				// this.handleGetMessageList(this.messageList[this.messageList.length - 1].id, message.v1
+				// 	.MessageQueryDirection.after)
+			},
+
+			handleGetMessageList(msgId, direction, needToBottom) {
+				if (this.messageFetching) return;
+				this.messageFetching = true
+				MessageSerivce.GetMessageList({
+					session_id: this.sessionId,
+					message_id: msgId,
+					direction: direction || message.v1.MessageQueryDirection.after
+				}).then(res => {
+					if (!res?.message_list) {
+						return uni.$u.toast("没有更多了")
+					}
+					if (direction === message.v1.MessageQueryDirection.after) {
+						this.messageList = [...this.messageList, ...res.message_list]
+					} else {
+						this.messageList = [...res.message_list, ...this.messageList]
+					}
+					if (needToBottom) {
+						this.$nextTick(function() {
+							this.goBottom()
+						})
+					}
+				}).catch(err => {
+					uni.$u.toast(err?.message || '登录失败');
+				}).finally(() => {
+					this.messageFetching = false
+				})
+			},
+
 			/** 点击 */
 			onClick() {
 				formatNumber(e);
@@ -141,7 +138,7 @@
 				this.handleSendMessage({
 					content: this.input,
 					session_type: message.v1.SessionType.group,
-					session_id: this.sessionId,
+					session_id: Number(this.sessionId),
 					sender_id: this.userInfo.id
 				});
 				this.input = '';

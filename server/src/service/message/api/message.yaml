@@ -4,6 +4,9 @@ config_version: 3
 http:
     rules:
         - selector: message.v1.MessageService.GetMessageList
-          get: /v1/messages/{session_id}
+          post: /v1/messageList
+          body: "*"
         - selector: message.v1.MessageService.GetSessionList
           get: /v1/sessions
+        - selector: message.v1.MessageService.GetSession
+          get: /v1/session/{id}

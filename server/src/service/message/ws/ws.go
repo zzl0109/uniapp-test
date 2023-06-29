@@ -57,12 +57,7 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 				var message messagepb.SendMessageService_Request
 				json.Unmarshal(p, &message)
 
-				err = ms.Send(&messagepb.SendMessageService_Request{
-					Content:     message.Content,
-					SessionId:   message.SessionId,
-					SessionType: message.SessionType,
-					SenderId:    message.SenderId,
-				})
+				err = ms.Send(&message)
 				if err != nil {
 					logger.Error("流式服务发送消息失败", zap.Error(err))
 				}

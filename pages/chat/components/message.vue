@@ -4,21 +4,26 @@
 			<u-avatar src="../../../static/logo.png"></u-avatar>
 		</view>
 		<view class="flex-1">
-			<view class="userName">{{ messageInfo.user_name || messageInfo.user_id }}</view>
+			<view class="userName">{{ messageInfo.sender_info.user.name }}</view>
 			<view class="content">{{ messageInfo.content }}</view>
 		</view>
 	</view>
 </template>
 
-<script lang="ts">
+
+<script>
 	// import { defineComponent } from 'vue';
 	// import { PropType } from 'vue';
 
-	interface IMessageInfo {
-		avatar ?: string;
-		user_name ?: string;
-		content ?: string;
-	}
+	// import {
+	// 	message
+	// } from '../../../service/proto_gen/message/message_pb';
+
+	// interface IMessageInfo {
+	// 	avatar ? : string;
+	// 	user_name ? : string;
+	// 	content ? : string;
+	// }
 
 	export default {
 		name: 'c-message',
@@ -29,19 +34,21 @@
 			isOwn: Boolean,
 			messageInfo: {
 				type: Object,
-				default: (raw : IMessageInfo) : IMessageInfo => {
+				default: (raw) => {
 					return {
 						avatar: '',
 						user_name: '',
 						content: '',
+						sender_id: 0,
+						Sender_info: {},
 						...raw,
 					};
 				},
 			},
 		},
-		mounted() { },
+		mounted() {},
 		methods: {
-			onClick(e : Event) {
+			onClick() {
 				// e.target
 			},
 		},

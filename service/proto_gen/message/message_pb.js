@@ -252,6 +252,319 @@ export const message = $root.message = (() => {
             return StreamMessageResponse;
         })();
 
+        /**
+         * Gender enum.
+         * @enum {string}
+         * @property {number} gender_not_specified=0 gender_not_specified value
+         * @property {number} male=1 male value
+         * @property {number} female=2 female value
+         */
+        v1.Gender = (function() {
+            const valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "gender_not_specified"] = 0;
+            values[valuesById[1] = "male"] = 1;
+            values[valuesById[2] = "female"] = 2;
+            return values;
+        })();
+
+        v1.User = (function() {
+
+            /**
+             * Properties of a User.
+             * @memberof message.v1
+             * @interface IUser
+             * @property {string} [name] User name
+             * @property {message.v1.Gender} [gender] User gender
+             * @property {string} [token] User token
+             */
+
+            /**
+             * Constructs a new User.
+             * @memberof message.v1
+             * @classdesc Represents a User.
+             * @constructor
+             * @param {message.v1.IUser=} [p] Properties to set
+             */
+            function User(p) {
+                if (p)
+                    for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                        if (p[ks[i]] != null)
+                            this[ks[i]] = p[ks[i]];
+            }
+
+            /**
+             * User name.
+             * @member {string}name
+             * @memberof message.v1.User
+             * @instance
+             */
+            User.prototype.name = "";
+
+            /**
+             * User gender.
+             * @member {message.v1.Gender}gender
+             * @memberof message.v1.User
+             * @instance
+             */
+            User.prototype.gender = 0;
+
+            /**
+             * User token.
+             * @member {string}token
+             * @memberof message.v1.User
+             * @instance
+             */
+            User.prototype.token = "";
+
+            /**
+             * Decodes a User message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.v1.User
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+             * @param {number} [l] Message length if known beforehand
+             * @returns {message.v1.User} User
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            User.decode = function decode(r, l) {
+                if (!(r instanceof $Reader))
+                    r = $Reader.create(r);
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.User();
+                while (r.pos < c) {
+                    var t = r.uint32();
+                    switch (t >>> 3) {
+                    case 1:
+                        m.name = r.string();
+                        break;
+                    case 2:
+                        m.gender = r.int32();
+                        break;
+                    case 3:
+                        m.token = r.string();
+                        break;
+                    default:
+                        r.skipType(t & 7);
+                        break;
+                    }
+                }
+                return m;
+            };
+
+            /**
+             * Creates a User message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.v1.User
+             * @static
+             * @param {Object.<string,*>} d Plain object
+             * @returns {message.v1.User} User
+             */
+            User.fromObject = function fromObject(d) {
+                if (d instanceof $root.message.v1.User)
+                    return d;
+                var m = new $root.message.v1.User();
+                if (d.name != null) {
+                    m.name = String(d.name);
+                }
+                switch (d.gender) {
+                case "gender_not_specified":
+                case 0:
+                    m.gender = 0;
+                    break;
+                case "male":
+                case 1:
+                    m.gender = 1;
+                    break;
+                case "female":
+                case 2:
+                    m.gender = 2;
+                    break;
+                }
+                if (d.token != null) {
+                    m.token = String(d.token);
+                }
+                return m;
+            };
+
+            /**
+             * Creates a plain object from a User message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.v1.User
+             * @static
+             * @param {message.v1.User} m User
+             * @param {$protobuf.IConversionOptions} [o] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            User.toObject = function toObject(m, o) {
+                if (!o)
+                    o = {};
+                var d = {};
+                if (o.defaults) {
+                    d.name = "";
+                    d.gender = o.enums === String ? "gender_not_specified" : 0;
+                    d.token = "";
+                }
+                if (m.name != null && m.hasOwnProperty("name")) {
+                    d.name = m.name;
+                }
+                if (m.gender != null && m.hasOwnProperty("gender")) {
+                    d.gender = o.enums === String ? $root.message.v1.Gender[m.gender] : m.gender;
+                }
+                if (m.token != null && m.hasOwnProperty("token")) {
+                    d.token = m.token;
+                }
+                return d;
+            };
+
+            /**
+             * Converts this User to JSON.
+             * @function toJSON
+             * @memberof message.v1.User
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            User.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return User;
+        })();
+
+        v1.UserEntity = (function() {
+
+            /**
+             * Properties of a UserEntity.
+             * @memberof message.v1
+             * @interface IUserEntity
+             * @property {number} [id] UserEntity id
+             * @property {message.v1.IUser} [user] UserEntity user
+             */
+
+            /**
+             * Constructs a new UserEntity.
+             * @memberof message.v1
+             * @classdesc Represents a UserEntity.
+             * @constructor
+             * @param {message.v1.IUserEntity=} [p] Properties to set
+             */
+            function UserEntity(p) {
+                if (p)
+                    for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                        if (p[ks[i]] != null)
+                            this[ks[i]] = p[ks[i]];
+            }
+
+            /**
+             * UserEntity id.
+             * @member {number}id
+             * @memberof message.v1.UserEntity
+             * @instance
+             */
+            UserEntity.prototype.id = 0;
+
+            /**
+             * UserEntity user.
+             * @member {(message.v1.IUser|null|undefined)}user
+             * @memberof message.v1.UserEntity
+             * @instance
+             */
+            UserEntity.prototype.user = null;
+
+            /**
+             * Decodes a UserEntity message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.v1.UserEntity
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+             * @param {number} [l] Message length if known beforehand
+             * @returns {message.v1.UserEntity} UserEntity
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            UserEntity.decode = function decode(r, l) {
+                if (!(r instanceof $Reader))
+                    r = $Reader.create(r);
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.UserEntity();
+                while (r.pos < c) {
+                    var t = r.uint32();
+                    switch (t >>> 3) {
+                    case 1:
+                        m.id = r.int32();
+                        break;
+                    case 2:
+                        m.user = $root.message.v1.User.decode(r, r.uint32());
+                        break;
+                    default:
+                        r.skipType(t & 7);
+                        break;
+                    }
+                }
+                return m;
+            };
+
+            /**
+             * Creates a UserEntity message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.v1.UserEntity
+             * @static
+             * @param {Object.<string,*>} d Plain object
+             * @returns {message.v1.UserEntity} UserEntity
+             */
+            UserEntity.fromObject = function fromObject(d) {
+                if (d instanceof $root.message.v1.UserEntity)
+                    return d;
+                var m = new $root.message.v1.UserEntity();
+                if (d.id != null) {
+                    m.id = d.id | 0;
+                }
+                if (d.user != null) {
+                    if (typeof d.user !== "object")
+                        throw TypeError(".message.v1.UserEntity.user: object expected");
+                    m.user = $root.message.v1.User.fromObject(d.user);
+                }
+                return m;
+            };
+
+            /**
+             * Creates a plain object from a UserEntity message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.v1.UserEntity
+             * @static
+             * @param {message.v1.UserEntity} m UserEntity
+             * @param {$protobuf.IConversionOptions} [o] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            UserEntity.toObject = function toObject(m, o) {
+                if (!o)
+                    o = {};
+                var d = {};
+                if (o.defaults) {
+                    d.id = 0;
+                    d.user = null;
+                }
+                if (m.id != null && m.hasOwnProperty("id")) {
+                    d.id = m.id;
+                }
+                if (m.user != null && m.hasOwnProperty("user")) {
+                    d.user = $root.message.v1.User.toObject(m.user, o);
+                }
+                return d;
+            };
+
+            /**
+             * Converts this UserEntity to JSON.
+             * @function toJSON
+             * @memberof message.v1.UserEntity
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            UserEntity.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return UserEntity;
+        })();
+
         v1.Message = (function() {
 
             /**
@@ -262,6 +575,7 @@ export const message = $root.message = (() => {
              * @property {string} [content] Message content
              * @property {number} [sender_id] Message sender_id
              * @property {number} [send_time_second] Message send_time_second
+             * @property {message.v1.IUserEntity} [sender_info] Message sender_info
              */
 
             /**
@@ -311,6 +625,14 @@ export const message = $root.message = (() => {
             Message.prototype.send_time_second = 0;
 
             /**
+             * Message sender_info.
+             * @member {(message.v1.IUserEntity|null|undefined)}sender_info
+             * @memberof message.v1.Message
+             * @instance
+             */
+            Message.prototype.sender_info = null;
+
+            /**
              * Decodes a Message message from the specified reader or buffer.
              * @function decode
              * @memberof message.v1.Message
@@ -339,6 +661,9 @@ export const message = $root.message = (() => {
                         break;
                     case 4:
                         m.send_time_second = r.int32();
+                        break;
+                    case 5:
+                        m.sender_info = $root.message.v1.UserEntity.decode(r, r.uint32());
                         break;
                     default:
                         r.skipType(t & 7);
@@ -372,6 +697,11 @@ export const message = $root.message = (() => {
                 if (d.send_time_second != null) {
                     m.send_time_second = d.send_time_second | 0;
                 }
+                if (d.sender_info != null) {
+                    if (typeof d.sender_info !== "object")
+                        throw TypeError(".message.v1.Message.sender_info: object expected");
+                    m.sender_info = $root.message.v1.UserEntity.fromObject(d.sender_info);
+                }
                 return m;
             };
 
@@ -393,6 +723,7 @@ export const message = $root.message = (() => {
                     d.content = "";
                     d.sender_id = 0;
                     d.send_time_second = 0;
+                    d.sender_info = null;
                 }
                 if (m.id != null && m.hasOwnProperty("id")) {
                     d.id = m.id;
@@ -405,6 +736,9 @@ export const message = $root.message = (() => {
                 }
                 if (m.send_time_second != null && m.hasOwnProperty("send_time_second")) {
                     d.send_time_second = m.send_time_second;
+                }
+                if (m.sender_info != null && m.hasOwnProperty("sender_info")) {
+                    d.sender_info = $root.message.v1.UserEntity.toObject(m.sender_info, o);
                 }
                 return d;
             };
@@ -438,22 +772,37 @@ export const message = $root.message = (() => {
             return values;
         })();
 
-        v1.GetMessageListSerivce = (function() {
+        /**
+         * MessageQueryDirection enum.
+         * @enum {string}
+         * @property {number} not_specified=0 not_specified value
+         * @property {number} before=1 before value
+         * @property {number} after=2 after value
+         */
+        v1.MessageQueryDirection = (function() {
+            const valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "not_specified"] = 0;
+            values[valuesById[1] = "before"] = 1;
+            values[valuesById[2] = "after"] = 2;
+            return values;
+        })();
+
+        v1.GetMessageListService = (function() {
 
             /**
-             * Properties of a GetMessageListSerivce.
+             * Properties of a GetMessageListService.
              * @memberof message.v1
-             * @interface IGetMessageListSerivce
+             * @interface IGetMessageListService
              */
 
             /**
-             * Constructs a new GetMessageListSerivce.
+             * Constructs a new GetMessageListService.
              * @memberof message.v1
-             * @classdesc Represents a GetMessageListSerivce.
+             * @classdesc Represents a GetMessageListService.
              * @constructor
-             * @param {message.v1.IGetMessageListSerivce=} [p] Properties to set
+             * @param {message.v1.IGetMessageListService=} [p] Properties to set
              */
-            function GetMessageListSerivce(p) {
+            function GetMessageListService(p) {
                 if (p)
                     for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
                         if (p[ks[i]] != null)
@@ -461,20 +810,20 @@ export const message = $root.message = (() => {
             }
 
             /**
-             * Decodes a GetMessageListSerivce message from the specified reader or buffer.
+             * Decodes a GetMessageListService message from the specified reader or buffer.
              * @function decode
-             * @memberof message.v1.GetMessageListSerivce
+             * @memberof message.v1.GetMessageListService
              * @static
              * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
              * @param {number} [l] Message length if known beforehand
-             * @returns {message.v1.GetMessageListSerivce} GetMessageListSerivce
+             * @returns {message.v1.GetMessageListService} GetMessageListService
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            GetMessageListSerivce.decode = function decode(r, l) {
+            GetMessageListService.decode = function decode(r, l) {
                 if (!(r instanceof $Reader))
                     r = $Reader.create(r);
-                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListSerivce();
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListService();
                 while (r.pos < c) {
                     var t = r.uint32();
                     switch (t >>> 3) {
@@ -487,58 +836,60 @@ export const message = $root.message = (() => {
             };
 
             /**
-             * Creates a GetMessageListSerivce message from a plain object. Also converts values to their respective internal types.
+             * Creates a GetMessageListService message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof message.v1.GetMessageListSerivce
+             * @memberof message.v1.GetMessageListService
              * @static
              * @param {Object.<string,*>} d Plain object
-             * @returns {message.v1.GetMessageListSerivce} GetMessageListSerivce
+             * @returns {message.v1.GetMessageListService} GetMessageListService
              */
-            GetMessageListSerivce.fromObject = function fromObject(d) {
-                if (d instanceof $root.message.v1.GetMessageListSerivce)
+            GetMessageListService.fromObject = function fromObject(d) {
+                if (d instanceof $root.message.v1.GetMessageListService)
                     return d;
-                return new $root.message.v1.GetMessageListSerivce();
+                return new $root.message.v1.GetMessageListService();
             };
 
             /**
-             * Creates a plain object from a GetMessageListSerivce message. Also converts values to other types if specified.
+             * Creates a plain object from a GetMessageListService message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof message.v1.GetMessageListSerivce
+             * @memberof message.v1.GetMessageListService
              * @static
-             * @param {message.v1.GetMessageListSerivce} m GetMessageListSerivce
+             * @param {message.v1.GetMessageListService} m GetMessageListService
              * @param {$protobuf.IConversionOptions} [o] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            GetMessageListSerivce.toObject = function toObject() {
+            GetMessageListService.toObject = function toObject() {
                 return {};
             };
 
             /**
-             * Converts this GetMessageListSerivce to JSON.
+             * Converts this GetMessageListService to JSON.
              * @function toJSON
-             * @memberof message.v1.GetMessageListSerivce
+             * @memberof message.v1.GetMessageListService
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
-            GetMessageListSerivce.prototype.toJSON = function toJSON() {
+            GetMessageListService.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            GetMessageListSerivce.Request = (function() {
+            GetMessageListService.Request = (function() {
 
                 /**
                  * Properties of a Request.
-                 * @memberof message.v1.GetMessageListSerivce
+                 * @memberof message.v1.GetMessageListService
                  * @interface IRequest
                  * @property {number} [session_id] Request session_id
+                 * @property {number} [message_id] Request message_id
+                 * @property {message.v1.MessageQueryDirection} [direction] Request direction
                  */
 
                 /**
                  * Constructs a new Request.
-                 * @memberof message.v1.GetMessageListSerivce
+                 * @memberof message.v1.GetMessageListService
                  * @classdesc Represents a Request.
                  * @constructor
-                 * @param {message.v1.GetMessageListSerivce.IRequest=} [p] Properties to set
+                 * @param {message.v1.GetMessageListService.IRequest=} [p] Properties to set
                  */
                 function Request(p) {
                     if (p)
@@ -550,31 +901,53 @@ export const message = $root.message = (() => {
                 /**
                  * Request session_id.
                  * @member {number}session_id
-                 * @memberof message.v1.GetMessageListSerivce.Request
+                 * @memberof message.v1.GetMessageListService.Request
                  * @instance
                  */
                 Request.prototype.session_id = 0;
 
                 /**
+                 * Request message_id.
+                 * @member {number}message_id
+                 * @memberof message.v1.GetMessageListService.Request
+                 * @instance
+                 */
+                Request.prototype.message_id = 0;
+
+                /**
+                 * Request direction.
+                 * @member {message.v1.MessageQueryDirection}direction
+                 * @memberof message.v1.GetMessageListService.Request
+                 * @instance
+                 */
+                Request.prototype.direction = 0;
+
+                /**
                  * Decodes a Request message from the specified reader or buffer.
                  * @function decode
-                 * @memberof message.v1.GetMessageListSerivce.Request
+                 * @memberof message.v1.GetMessageListService.Request
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
                  * @param {number} [l] Message length if known beforehand
-                 * @returns {message.v1.GetMessageListSerivce.Request} Request
+                 * @returns {message.v1.GetMessageListService.Request} Request
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
                 Request.decode = function decode(r, l) {
                     if (!(r instanceof $Reader))
                         r = $Reader.create(r);
-                    var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListSerivce.Request();
+                    var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListService.Request();
                     while (r.pos < c) {
                         var t = r.uint32();
                         switch (t >>> 3) {
                         case 1:
                             m.session_id = r.int32();
+                            break;
+                        case 2:
+                            m.message_id = r.int32();
+                            break;
+                        case 3:
+                            m.direction = r.int32();
                             break;
                         default:
                             r.skipType(t & 7);
@@ -587,17 +960,34 @@ export const message = $root.message = (() => {
                 /**
                  * Creates a Request message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
-                 * @memberof message.v1.GetMessageListSerivce.Request
+                 * @memberof message.v1.GetMessageListService.Request
                  * @static
                  * @param {Object.<string,*>} d Plain object
-                 * @returns {message.v1.GetMessageListSerivce.Request} Request
+                 * @returns {message.v1.GetMessageListService.Request} Request
                  */
                 Request.fromObject = function fromObject(d) {
-                    if (d instanceof $root.message.v1.GetMessageListSerivce.Request)
+                    if (d instanceof $root.message.v1.GetMessageListService.Request)
                         return d;
-                    var m = new $root.message.v1.GetMessageListSerivce.Request();
+                    var m = new $root.message.v1.GetMessageListService.Request();
                     if (d.session_id != null) {
                         m.session_id = d.session_id | 0;
+                    }
+                    if (d.message_id != null) {
+                        m.message_id = d.message_id | 0;
+                    }
+                    switch (d.direction) {
+                    case "not_specified":
+                    case 0:
+                        m.direction = 0;
+                        break;
+                    case "before":
+                    case 1:
+                        m.direction = 1;
+                        break;
+                    case "after":
+                    case 2:
+                        m.direction = 2;
+                        break;
                     }
                     return m;
                 };
@@ -605,9 +995,9 @@ export const message = $root.message = (() => {
                 /**
                  * Creates a plain object from a Request message. Also converts values to other types if specified.
                  * @function toObject
-                 * @memberof message.v1.GetMessageListSerivce.Request
+                 * @memberof message.v1.GetMessageListService.Request
                  * @static
-                 * @param {message.v1.GetMessageListSerivce.Request} m Request
+                 * @param {message.v1.GetMessageListService.Request} m Request
                  * @param {$protobuf.IConversionOptions} [o] Conversion options
                  * @returns {Object.<string,*>} Plain object
                  */
@@ -617,9 +1007,17 @@ export const message = $root.message = (() => {
                     var d = {};
                     if (o.defaults) {
                         d.session_id = 0;
+                        d.message_id = 0;
+                        d.direction = o.enums === String ? "not_specified" : 0;
                     }
                     if (m.session_id != null && m.hasOwnProperty("session_id")) {
                         d.session_id = m.session_id;
+                    }
+                    if (m.message_id != null && m.hasOwnProperty("message_id")) {
+                        d.message_id = m.message_id;
+                    }
+                    if (m.direction != null && m.hasOwnProperty("direction")) {
+                        d.direction = o.enums === String ? $root.message.v1.MessageQueryDirection[m.direction] : m.direction;
                     }
                     return d;
                 };
@@ -627,7 +1025,7 @@ export const message = $root.message = (() => {
                 /**
                  * Converts this Request to JSON.
                  * @function toJSON
-                 * @memberof message.v1.GetMessageListSerivce.Request
+                 * @memberof message.v1.GetMessageListService.Request
                  * @instance
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -638,21 +1036,21 @@ export const message = $root.message = (() => {
                 return Request;
             })();
 
-            GetMessageListSerivce.Response = (function() {
+            GetMessageListService.Response = (function() {
 
                 /**
                  * Properties of a Response.
-                 * @memberof message.v1.GetMessageListSerivce
+                 * @memberof message.v1.GetMessageListService
                  * @interface IResponse
                  * @property {Array.<message.v1.IMessage>} [message_list] Response message_list
                  */
 
                 /**
                  * Constructs a new Response.
-                 * @memberof message.v1.GetMessageListSerivce
+                 * @memberof message.v1.GetMessageListService
                  * @classdesc Represents a Response.
                  * @constructor
-                 * @param {message.v1.GetMessageListSerivce.IResponse=} [p] Properties to set
+                 * @param {message.v1.GetMessageListService.IResponse=} [p] Properties to set
                  */
                 function Response(p) {
                     this.message_list = [];
@@ -665,7 +1063,7 @@ export const message = $root.message = (() => {
                 /**
                  * Response message_list.
                  * @member {Array.<message.v1.IMessage>}message_list
-                 * @memberof message.v1.GetMessageListSerivce.Response
+                 * @memberof message.v1.GetMessageListService.Response
                  * @instance
                  */
                 Response.prototype.message_list = $util.emptyArray;
@@ -673,18 +1071,18 @@ export const message = $root.message = (() => {
                 /**
                  * Decodes a Response message from the specified reader or buffer.
                  * @function decode
-                 * @memberof message.v1.GetMessageListSerivce.Response
+                 * @memberof message.v1.GetMessageListService.Response
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
                  * @param {number} [l] Message length if known beforehand
-                 * @returns {message.v1.GetMessageListSerivce.Response} Response
+                 * @returns {message.v1.GetMessageListService.Response} Response
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
                 Response.decode = function decode(r, l) {
                     if (!(r instanceof $Reader))
                         r = $Reader.create(r);
-                    var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListSerivce.Response();
+                    var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetMessageListService.Response();
                     while (r.pos < c) {
                         var t = r.uint32();
                         switch (t >>> 3) {
@@ -704,22 +1102,22 @@ export const message = $root.message = (() => {
                 /**
                  * Creates a Response message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
-                 * @memberof message.v1.GetMessageListSerivce.Response
+                 * @memberof message.v1.GetMessageListService.Response
                  * @static
                  * @param {Object.<string,*>} d Plain object
-                 * @returns {message.v1.GetMessageListSerivce.Response} Response
+                 * @returns {message.v1.GetMessageListService.Response} Response
                  */
                 Response.fromObject = function fromObject(d) {
-                    if (d instanceof $root.message.v1.GetMessageListSerivce.Response)
+                    if (d instanceof $root.message.v1.GetMessageListService.Response)
                         return d;
-                    var m = new $root.message.v1.GetMessageListSerivce.Response();
+                    var m = new $root.message.v1.GetMessageListService.Response();
                     if (d.message_list) {
                         if (!Array.isArray(d.message_list))
-                            throw TypeError(".message.v1.GetMessageListSerivce.Response.message_list: array expected");
+                            throw TypeError(".message.v1.GetMessageListService.Response.message_list: array expected");
                         m.message_list = [];
                         for (var i = 0; i < d.message_list.length; ++i) {
                             if (typeof d.message_list[i] !== "object")
-                                throw TypeError(".message.v1.GetMessageListSerivce.Response.message_list: object expected");
+                                throw TypeError(".message.v1.GetMessageListService.Response.message_list: object expected");
                             m.message_list[i] = $root.message.v1.Message.fromObject(d.message_list[i]);
                         }
                     }
@@ -729,9 +1127,9 @@ export const message = $root.message = (() => {
                 /**
                  * Creates a plain object from a Response message. Also converts values to other types if specified.
                  * @function toObject
-                 * @memberof message.v1.GetMessageListSerivce.Response
+                 * @memberof message.v1.GetMessageListService.Response
                  * @static
-                 * @param {message.v1.GetMessageListSerivce.Response} m Response
+                 * @param {message.v1.GetMessageListService.Response} m Response
                  * @param {$protobuf.IConversionOptions} [o] Conversion options
                  * @returns {Object.<string,*>} Plain object
                  */
@@ -754,7 +1152,7 @@ export const message = $root.message = (() => {
                 /**
                  * Converts this Response to JSON.
                  * @function toJSON
-                 * @memberof message.v1.GetMessageListSerivce.Response
+                 * @memberof message.v1.GetMessageListService.Response
                  * @instance
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -765,7 +1163,7 @@ export const message = $root.message = (() => {
                 return Response;
             })();
 
-            return GetMessageListSerivce;
+            return GetMessageListService;
         })();
 
         v1.SendMessageService = (function() {
@@ -1507,6 +1905,236 @@ export const message = $root.message = (() => {
             return GetSessionListService;
         })();
 
+        v1.GetSessionRequest = (function() {
+
+            /**
+             * Properties of a GetSessionRequest.
+             * @memberof message.v1
+             * @interface IGetSessionRequest
+             * @property {number} [id] GetSessionRequest id
+             */
+
+            /**
+             * Constructs a new GetSessionRequest.
+             * @memberof message.v1
+             * @classdesc Represents a GetSessionRequest.
+             * @constructor
+             * @param {message.v1.IGetSessionRequest=} [p] Properties to set
+             */
+            function GetSessionRequest(p) {
+                if (p)
+                    for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                        if (p[ks[i]] != null)
+                            this[ks[i]] = p[ks[i]];
+            }
+
+            /**
+             * GetSessionRequest id.
+             * @member {number}id
+             * @memberof message.v1.GetSessionRequest
+             * @instance
+             */
+            GetSessionRequest.prototype.id = 0;
+
+            /**
+             * Decodes a GetSessionRequest message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.v1.GetSessionRequest
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+             * @param {number} [l] Message length if known beforehand
+             * @returns {message.v1.GetSessionRequest} GetSessionRequest
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GetSessionRequest.decode = function decode(r, l) {
+                if (!(r instanceof $Reader))
+                    r = $Reader.create(r);
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetSessionRequest();
+                while (r.pos < c) {
+                    var t = r.uint32();
+                    switch (t >>> 3) {
+                    case 1:
+                        m.id = r.int32();
+                        break;
+                    default:
+                        r.skipType(t & 7);
+                        break;
+                    }
+                }
+                return m;
+            };
+
+            /**
+             * Creates a GetSessionRequest message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.v1.GetSessionRequest
+             * @static
+             * @param {Object.<string,*>} d Plain object
+             * @returns {message.v1.GetSessionRequest} GetSessionRequest
+             */
+            GetSessionRequest.fromObject = function fromObject(d) {
+                if (d instanceof $root.message.v1.GetSessionRequest)
+                    return d;
+                var m = new $root.message.v1.GetSessionRequest();
+                if (d.id != null) {
+                    m.id = d.id | 0;
+                }
+                return m;
+            };
+
+            /**
+             * Creates a plain object from a GetSessionRequest message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.v1.GetSessionRequest
+             * @static
+             * @param {message.v1.GetSessionRequest} m GetSessionRequest
+             * @param {$protobuf.IConversionOptions} [o] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GetSessionRequest.toObject = function toObject(m, o) {
+                if (!o)
+                    o = {};
+                var d = {};
+                if (o.defaults) {
+                    d.id = 0;
+                }
+                if (m.id != null && m.hasOwnProperty("id")) {
+                    d.id = m.id;
+                }
+                return d;
+            };
+
+            /**
+             * Converts this GetSessionRequest to JSON.
+             * @function toJSON
+             * @memberof message.v1.GetSessionRequest
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GetSessionRequest.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return GetSessionRequest;
+        })();
+
+        v1.GetSessionResponse = (function() {
+
+            /**
+             * Properties of a GetSessionResponse.
+             * @memberof message.v1
+             * @interface IGetSessionResponse
+             * @property {message.v1.GetSessionListService.ISessionInfo} [session] GetSessionResponse session
+             */
+
+            /**
+             * Constructs a new GetSessionResponse.
+             * @memberof message.v1
+             * @classdesc Represents a GetSessionResponse.
+             * @constructor
+             * @param {message.v1.IGetSessionResponse=} [p] Properties to set
+             */
+            function GetSessionResponse(p) {
+                if (p)
+                    for (var ks = Object.keys(p), i = 0; i < ks.length; ++i)
+                        if (p[ks[i]] != null)
+                            this[ks[i]] = p[ks[i]];
+            }
+
+            /**
+             * GetSessionResponse session.
+             * @member {(message.v1.GetSessionListService.ISessionInfo|null|undefined)}session
+             * @memberof message.v1.GetSessionResponse
+             * @instance
+             */
+            GetSessionResponse.prototype.session = null;
+
+            /**
+             * Decodes a GetSessionResponse message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.v1.GetSessionResponse
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} r Reader or buffer to decode from
+             * @param {number} [l] Message length if known beforehand
+             * @returns {message.v1.GetSessionResponse} GetSessionResponse
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GetSessionResponse.decode = function decode(r, l) {
+                if (!(r instanceof $Reader))
+                    r = $Reader.create(r);
+                var c = l === undefined ? r.len : r.pos + l, m = new $root.message.v1.GetSessionResponse();
+                while (r.pos < c) {
+                    var t = r.uint32();
+                    switch (t >>> 3) {
+                    case 1:
+                        m.session = $root.message.v1.GetSessionListService.SessionInfo.decode(r, r.uint32());
+                        break;
+                    default:
+                        r.skipType(t & 7);
+                        break;
+                    }
+                }
+                return m;
+            };
+
+            /**
+             * Creates a GetSessionResponse message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.v1.GetSessionResponse
+             * @static
+             * @param {Object.<string,*>} d Plain object
+             * @returns {message.v1.GetSessionResponse} GetSessionResponse
+             */
+            GetSessionResponse.fromObject = function fromObject(d) {
+                if (d instanceof $root.message.v1.GetSessionResponse)
+                    return d;
+                var m = new $root.message.v1.GetSessionResponse();
+                if (d.session != null) {
+                    if (typeof d.session !== "object")
+                        throw TypeError(".message.v1.GetSessionResponse.session: object expected");
+                    m.session = $root.message.v1.GetSessionListService.SessionInfo.fromObject(d.session);
+                }
+                return m;
+            };
+
+            /**
+             * Creates a plain object from a GetSessionResponse message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.v1.GetSessionResponse
+             * @static
+             * @param {message.v1.GetSessionResponse} m GetSessionResponse
+             * @param {$protobuf.IConversionOptions} [o] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GetSessionResponse.toObject = function toObject(m, o) {
+                if (!o)
+                    o = {};
+                var d = {};
+                if (o.defaults) {
+                    d.session = null;
+                }
+                if (m.session != null && m.hasOwnProperty("session")) {
+                    d.session = $root.message.v1.GetSessionListService.SessionInfo.toObject(m.session, o);
+                }
+                return d;
+            };
+
+            /**
+             * Converts this GetSessionResponse to JSON.
+             * @function toJSON
+             * @memberof message.v1.GetSessionResponse
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GetSessionResponse.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return GetSessionResponse;
+        })();
+
         v1.MessageService = (function() {
 
             /**
@@ -1564,7 +2192,7 @@ export const message = $root.message = (() => {
              * @typedef GetMessageListCallback
              * @type {function}
              * @param {Error|null} error Error, if any
-             * @param {message.v1.GetMessageListSerivce.Response} [response] Response
+             * @param {message.v1.GetMessageListService.Response} [response] Response
              */
 
             /**
@@ -1572,13 +2200,13 @@ export const message = $root.message = (() => {
              * @function .getMessageList
              * @memberof message.v1.MessageService
              * @instance
-             * @param {message.v1.GetMessageListSerivce.IRequest} request Request message or plain object
+             * @param {message.v1.GetMessageListService.IRequest} request Request message or plain object
              * @param {message.v1.MessageService.GetMessageListCallback} callback Node-style callback called with the error, if any, and Response
              * @returns {undefined}
              * @variation 1
              */
             MessageService.prototype.getMessageList = function getMessageList(request, callback) {
-                return this.rpcCall(getMessageList, $root.message.v1.GetMessageListSerivce.Request, $root.message.v1.GetMessageListSerivce.Response, request, callback);
+                return this.rpcCall(getMessageList, $root.message.v1.GetMessageListService.Request, $root.message.v1.GetMessageListService.Response, request, callback);
             };
 
             /**
@@ -1586,8 +2214,8 @@ export const message = $root.message = (() => {
              * @function getMessageList
              * @memberof message.v1.MessageService
              * @instance
-             * @param {message.v1.GetMessageListSerivce.IRequest} request Request message or plain object
-             * @returns {Promise<message.v1.GetMessageListSerivce.Response>} Promise
+             * @param {message.v1.GetMessageListService.IRequest} request Request message or plain object
+             * @returns {Promise<message.v1.GetMessageListService.Response>} Promise
              * @variation 2
              */
 
@@ -1654,6 +2282,39 @@ export const message = $root.message = (() => {
              * @instance
              * @param {message.v1.GetSessionListService.IRequest} request Request message or plain object
              * @returns {Promise<message.v1.GetSessionListService.Response>} Promise
+             * @variation 2
+             */
+
+            /**
+             * Callback as used by {@link message.v1.MessageService#getSession}.
+             * @memberof message.v1.MessageService
+             * @typedef GetSessionCallback
+             * @type {function}
+             * @param {Error|null} error Error, if any
+             * @param {message.v1.GetSessionResponse} [response] GetSessionResponse
+             */
+
+            /**
+             * Calls GetSession.
+             * @function .getSession
+             * @memberof message.v1.MessageService
+             * @instance
+             * @param {message.v1.IGetSessionRequest} request GetSessionRequest message or plain object
+             * @param {message.v1.MessageService.GetSessionCallback} callback Node-style callback called with the error, if any, and GetSessionResponse
+             * @returns {undefined}
+             * @variation 1
+             */
+            MessageService.prototype.getSession = function getSession(request, callback) {
+                return this.rpcCall(getSession, $root.message.v1.GetSessionRequest, $root.message.v1.GetSessionResponse, request, callback);
+            };
+
+            /**
+             * Calls GetSession.
+             * @function getSession
+             * @memberof message.v1.MessageService
+             * @instance
+             * @param {message.v1.IGetSessionRequest} request GetSessionRequest message or plain object
+             * @returns {Promise<message.v1.GetSessionResponse>} Promise
              * @variation 2
              */
 

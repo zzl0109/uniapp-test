@@ -108,6 +108,133 @@ export namespace message {
             public toJSON(): { [k: string]: any };
         }
 
+        /** Gender enum. */
+        enum Gender {
+            gender_not_specified = 0,
+            male = 1,
+            female = 2
+        }
+
+        /** Properties of a User. */
+        interface IUser {
+
+            /** User name */
+            name?: string;
+
+            /** User gender */
+            gender?: message.v1.Gender;
+
+            /** User token */
+            token?: string;
+        }
+
+        /** Represents a User. */
+        class User {
+
+            /**
+             * Constructs a new User.
+             * @param [p] Properties to set
+             */
+            constructor(p?: message.v1.IUser);
+
+            /** User name. */
+            public name: string;
+
+            /** User gender. */
+            public gender: message.v1.Gender;
+
+            /** User token. */
+            public token: string;
+
+            /**
+             * Decodes a User message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns User
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.User;
+
+            /**
+             * Creates a User message from a plain object. Also converts values to their respective internal types.
+             * @param d Plain object
+             * @returns User
+             */
+            public static fromObject(d: { [k: string]: any }): message.v1.User;
+
+            /**
+             * Creates a plain object from a User message. Also converts values to other types if specified.
+             * @param m User
+             * @param [o] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(m: message.v1.User, o?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this User to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+
+        /** Properties of a UserEntity. */
+        interface IUserEntity {
+
+            /** UserEntity id */
+            id?: number;
+
+            /** UserEntity user */
+            user?: message.v1.IUser;
+        }
+
+        /** Represents a UserEntity. */
+        class UserEntity {
+
+            /**
+             * Constructs a new UserEntity.
+             * @param [p] Properties to set
+             */
+            constructor(p?: message.v1.IUserEntity);
+
+            /** UserEntity id. */
+            public id: number;
+
+            /** UserEntity user. */
+            public user?: (message.v1.IUser|null);
+
+            /**
+             * Decodes a UserEntity message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns UserEntity
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.UserEntity;
+
+            /**
+             * Creates a UserEntity message from a plain object. Also converts values to their respective internal types.
+             * @param d Plain object
+             * @returns UserEntity
+             */
+            public static fromObject(d: { [k: string]: any }): message.v1.UserEntity;
+
+            /**
+             * Creates a plain object from a UserEntity message. Also converts values to other types if specified.
+             * @param m UserEntity
+             * @param [o] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(m: message.v1.UserEntity, o?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this UserEntity to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+
         /** Properties of a Message. */
         interface IMessage {
 
@@ -122,6 +249,9 @@ export namespace message {
 
             /** Message send_time_second */
             send_time_second?: number;
+
+            /** Message sender_info */
+            sender_info?: message.v1.IUserEntity;
         }
 
         /** Represents a Message. */
@@ -144,6 +274,9 @@ export namespace message {
 
             /** Message send_time_second. */
             public send_time_second: number;
+
+            /** Message sender_info. */
+            public sender_info?: (message.v1.IUserEntity|null);
 
             /**
              * Decodes a Message message from the specified reader or buffer.
@@ -184,58 +317,71 @@ export namespace message {
             group = 2
         }
 
-        /** Properties of a GetMessageListSerivce. */
-        interface IGetMessageListSerivce {
+        /** MessageQueryDirection enum. */
+        enum MessageQueryDirection {
+            not_specified = 0,
+            before = 1,
+            after = 2
         }
 
-        /** Represents a GetMessageListSerivce. */
-        class GetMessageListSerivce {
+        /** Properties of a GetMessageListService. */
+        interface IGetMessageListService {
+        }
+
+        /** Represents a GetMessageListService. */
+        class GetMessageListService {
 
             /**
-             * Constructs a new GetMessageListSerivce.
+             * Constructs a new GetMessageListService.
              * @param [p] Properties to set
              */
-            constructor(p?: message.v1.IGetMessageListSerivce);
+            constructor(p?: message.v1.IGetMessageListService);
 
             /**
-             * Decodes a GetMessageListSerivce message from the specified reader or buffer.
+             * Decodes a GetMessageListService message from the specified reader or buffer.
              * @param r Reader or buffer to decode from
              * @param [l] Message length if known beforehand
-             * @returns GetMessageListSerivce
+             * @returns GetMessageListService
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListSerivce;
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListService;
 
             /**
-             * Creates a GetMessageListSerivce message from a plain object. Also converts values to their respective internal types.
+             * Creates a GetMessageListService message from a plain object. Also converts values to their respective internal types.
              * @param d Plain object
-             * @returns GetMessageListSerivce
+             * @returns GetMessageListService
              */
-            public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListSerivce;
+            public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListService;
 
             /**
-             * Creates a plain object from a GetMessageListSerivce message. Also converts values to other types if specified.
-             * @param m GetMessageListSerivce
+             * Creates a plain object from a GetMessageListService message. Also converts values to other types if specified.
+             * @param m GetMessageListService
              * @param [o] Conversion options
              * @returns Plain object
              */
-            public static toObject(m: message.v1.GetMessageListSerivce, o?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(m: message.v1.GetMessageListService, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this GetMessageListSerivce to JSON.
+             * Converts this GetMessageListService to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
         }
 
-        namespace GetMessageListSerivce {
+        namespace GetMessageListService {
 
             /** Properties of a Request. */
             interface IRequest {
 
                 /** Request session_id */
                 session_id?: number;
+
+                /** Request message_id */
+                message_id?: number;
+
+                /** Request direction */
+                direction?: message.v1.MessageQueryDirection;
             }
 
             /** Represents a Request. */
@@ -245,10 +391,16 @@ export namespace message {
                  * Constructs a new Request.
                  * @param [p] Properties to set
                  */
-                constructor(p?: message.v1.GetMessageListSerivce.IRequest);
+                constructor(p?: message.v1.GetMessageListService.IRequest);
 
                 /** Request session_id. */
                 public session_id: number;
+
+                /** Request message_id. */
+                public message_id: number;
+
+                /** Request direction. */
+                public direction: message.v1.MessageQueryDirection;
 
                 /**
                  * Decodes a Request message from the specified reader or buffer.
@@ -258,14 +410,14 @@ export namespace message {
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
-                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListSerivce.Request;
+                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListService.Request;
 
                 /**
                  * Creates a Request message from a plain object. Also converts values to their respective internal types.
                  * @param d Plain object
                  * @returns Request
                  */
-                public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListSerivce.Request;
+                public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListService.Request;
 
                 /**
                  * Creates a plain object from a Request message. Also converts values to other types if specified.
@@ -273,7 +425,7 @@ export namespace message {
                  * @param [o] Conversion options
                  * @returns Plain object
                  */
-                public static toObject(m: message.v1.GetMessageListSerivce.Request, o?: $protobuf.IConversionOptions): { [k: string]: any };
+                public static toObject(m: message.v1.GetMessageListService.Request, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
                 /**
                  * Converts this Request to JSON.
@@ -296,7 +448,7 @@ export namespace message {
                  * Constructs a new Response.
                  * @param [p] Properties to set
                  */
-                constructor(p?: message.v1.GetMessageListSerivce.IResponse);
+                constructor(p?: message.v1.GetMessageListService.IResponse);
 
                 /** Response message_list. */
                 public message_list: message.v1.IMessage[];
@@ -309,14 +461,14 @@ export namespace message {
                  * @throws {Error} If the payload is not a reader or valid buffer
                  * @throws {$protobuf.util.ProtocolError} If required fields are missing
                  */
-                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListSerivce.Response;
+                public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetMessageListService.Response;
 
                 /**
                  * Creates a Response message from a plain object. Also converts values to their respective internal types.
                  * @param d Plain object
                  * @returns Response
                  */
-                public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListSerivce.Response;
+                public static fromObject(d: { [k: string]: any }): message.v1.GetMessageListService.Response;
 
                 /**
                  * Creates a plain object from a Response message. Also converts values to other types if specified.
@@ -324,7 +476,7 @@ export namespace message {
                  * @param [o] Conversion options
                  * @returns Plain object
                  */
-                public static toObject(m: message.v1.GetMessageListSerivce.Response, o?: $protobuf.IConversionOptions): { [k: string]: any };
+                public static toObject(m: message.v1.GetMessageListService.Response, o?: $protobuf.IConversionOptions): { [k: string]: any };
 
                 /**
                  * Converts this Response to JSON.
@@ -658,6 +810,108 @@ export namespace message {
             }
         }
 
+        /** Properties of a GetSessionRequest. */
+        interface IGetSessionRequest {
+
+            /** GetSessionRequest id */
+            id?: number;
+        }
+
+        /** Represents a GetSessionRequest. */
+        class GetSessionRequest {
+
+            /**
+             * Constructs a new GetSessionRequest.
+             * @param [p] Properties to set
+             */
+            constructor(p?: message.v1.IGetSessionRequest);
+
+            /** GetSessionRequest id. */
+            public id: number;
+
+            /**
+             * Decodes a GetSessionRequest message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns GetSessionRequest
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetSessionRequest;
+
+            /**
+             * Creates a GetSessionRequest message from a plain object. Also converts values to their respective internal types.
+             * @param d Plain object
+             * @returns GetSessionRequest
+             */
+            public static fromObject(d: { [k: string]: any }): message.v1.GetSessionRequest;
+
+            /**
+             * Creates a plain object from a GetSessionRequest message. Also converts values to other types if specified.
+             * @param m GetSessionRequest
+             * @param [o] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(m: message.v1.GetSessionRequest, o?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GetSessionRequest to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+
+        /** Properties of a GetSessionResponse. */
+        interface IGetSessionResponse {
+
+            /** GetSessionResponse session */
+            session?: message.v1.GetSessionListService.ISessionInfo;
+        }
+
+        /** Represents a GetSessionResponse. */
+        class GetSessionResponse {
+
+            /**
+             * Constructs a new GetSessionResponse.
+             * @param [p] Properties to set
+             */
+            constructor(p?: message.v1.IGetSessionResponse);
+
+            /** GetSessionResponse session. */
+            public session?: (message.v1.GetSessionListService.ISessionInfo|null);
+
+            /**
+             * Decodes a GetSessionResponse message from the specified reader or buffer.
+             * @param r Reader or buffer to decode from
+             * @param [l] Message length if known beforehand
+             * @returns GetSessionResponse
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): message.v1.GetSessionResponse;
+
+            /**
+             * Creates a GetSessionResponse message from a plain object. Also converts values to their respective internal types.
+             * @param d Plain object
+             * @returns GetSessionResponse
+             */
+            public static fromObject(d: { [k: string]: any }): message.v1.GetSessionResponse;
+
+            /**
+             * Creates a plain object from a GetSessionResponse message. Also converts values to other types if specified.
+             * @param m GetSessionResponse
+             * @param [o] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(m: message.v1.GetSessionResponse, o?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GetSessionResponse to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+
         /** Represents a MessageService */
         class MessageService extends $protobuf.rpc.Service {
 
@@ -688,14 +942,14 @@ export namespace message {
              * @param request Request message or plain object
              * @param callback Node-style callback called with the error, if any, and Response
              */
-            public getMessageList(request: message.v1.GetMessageListSerivce.IRequest, callback: message.v1.MessageService.GetMessageListCallback): void;
+            public getMessageList(request: message.v1.GetMessageListService.IRequest, callback: message.v1.MessageService.GetMessageListCallback): void;
 
             /**
              * Calls GetMessageList.
              * @param request Request message or plain object
              * @returns Promise
              */
-            public getMessageList(request: message.v1.GetMessageListSerivce.IRequest): Promise<message.v1.GetMessageListSerivce.Response>;
+            public getMessageList(request: message.v1.GetMessageListService.IRequest): Promise<message.v1.GetMessageListService.Response>;
 
             /**
              * Calls SendMessage.
@@ -724,6 +978,20 @@ export namespace message {
              * @returns Promise
              */
             public getSessionList(request: message.v1.GetSessionListService.IRequest): Promise<message.v1.GetSessionListService.Response>;
+
+            /**
+             * Calls GetSession.
+             * @param request GetSessionRequest message or plain object
+             * @param callback Node-style callback called with the error, if any, and GetSessionResponse
+             */
+            public getSession(request: message.v1.IGetSessionRequest, callback: message.v1.MessageService.GetSessionCallback): void;
+
+            /**
+             * Calls GetSession.
+             * @param request GetSessionRequest message or plain object
+             * @returns Promise
+             */
+            public getSession(request: message.v1.IGetSessionRequest): Promise<message.v1.GetSessionResponse>;
         }
 
         namespace MessageService {
@@ -740,7 +1008,7 @@ export namespace message {
              * @param error Error, if any
              * @param [response] Response
              */
-            type GetMessageListCallback = (error: (Error|null), response?: message.v1.GetMessageListSerivce.Response) => void;
+            type GetMessageListCallback = (error: (Error|null), response?: message.v1.GetMessageListService.Response) => void;
 
             /**
              * Callback as used by {@link message.v1.MessageService#sendMessage}.
@@ -755,6 +1023,13 @@ export namespace message {
              * @param [response] Response
              */
             type GetSessionListCallback = (error: (Error|null), response?: message.v1.GetSessionListService.Response) => void;
+
+            /**
+             * Callback as used by {@link message.v1.MessageService#getSession}.
+             * @param error Error, if any
+             * @param [response] GetSessionResponse
+             */
+            type GetSessionCallback = (error: (Error|null), response?: message.v1.GetSessionResponse) => void;
         }
     }
 }

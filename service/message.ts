@@ -2,24 +2,30 @@ import { message } from './proto_gen/message/message_pb';
 import { Qiji } from './request';
 
 export namespace MessageSerivce {
-	export const GetMessageList = (session_id : number) : Promise<any> => {
-		return Qiji.sendRequest<any, any>({
-			path: `/v1/messages/${session_id}`,
-			method: 'GET',
-			responseMarshaller() { },
+	export const GetMessageList = (data : message.v1.GetMessageListService.IRequest) : Promise<message.v1.GetMessageListService.IResponse> => {
+		return Qiji.sendRequest<message.v1.GetMessageListService.IRequest, message.v1.GetMessageListService.IResponse>({
+			path: `/v1/messageList`,
+			method: 'POST',
+			data,
+			responseMarshaller: message.v1.GetMessageListService.Response.fromObject,
 		});
 	};
 
 	export const GetGroups =
 		() : Promise<message.v1.GetSessionListService.IResponse> => {
-			return Qiji.sendRequest<
-				message.v1.GetSessionListService.IRequest,
-				message.v1.GetSessionListService.IResponse
-			>({
+			return Qiji.sendRequest<message.v1.GetSessionListService.IRequest, message.v1.GetSessionListService.IResponse>({
 				path: `/v1/sessions`,
 				method: 'GET',
-				responseMarshaller:
-					message.v1.GetSessionListService.Response.fromObject,
+				responseMarshaller: message.v1.GetSessionListService.Response.fromObject,
+			});
+		};
+
+	export const GetGroup =
+		(id : number) : Promise<message.v1.GetSessionResponse> => {
+			return Qiji.sendRequest<message.v1.IGetSessionRequest, message.v1.GetSessionResponse>({
+				path: `/v1/session/${id}`,
+				method: 'GET',
+				responseMarshaller: message.v1.GetSessionResponse.fromObject
 			});
 		};
 

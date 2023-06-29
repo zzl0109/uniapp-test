@@ -7,7 +7,7 @@
 				</view>
 				<view class="preview">
 					<view class="name">{{i.name}}</view>
-					<view class="message">消息：111</view>
+					<!-- <view class="message">消息：111</view> -->
 				</view>
 			</view>
 		</view>
@@ -37,31 +37,12 @@
 			}
 		},
 		onReady() {
-			// uni.connectSocket({
-			// 	url: `ws://localhost:9090/ws?id=123`
-			// })
-			// uni.onSocketOpen(function() {
-			// 	uni.onSocketMessage((v) => {
-
-			// 		console.log(v.data, JSON.parse(v.data), 'onSocketMessage');
-			// 	})
-			// 	setInterval(() => {
-			// 		uni.sendSocketMessage({
-			// 			data: "zhangzhulei"
-			// 		})
-			// 	}, 4000)
-			// })
-
-			UserService.GetUser(1).then(res => {
-				console.log(res, 'res');
-			})
 			this.handleGetGroups()
 		},
 		methods: {
 			handleGetGroups: function() {
 				MessageSerivce.GetGroups().then(res => {
 					this.sessionList = res.session_list || []
-					console.log(res.session_list, 'res');
 				}).catch(err => {
 					console.error(err, 'err');
 				})
@@ -74,8 +55,7 @@
 			// 	})
 			// },
 			handleRedirectChat(sessionId) {
-				console.log(sessionId, 'sessionId');
-				uni.redirectTo({
+				uni.navigateTo({
 					url: routing.chat({
 						sessionId: sessionId
 					})

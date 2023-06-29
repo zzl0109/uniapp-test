@@ -8,7 +8,6 @@ import (
 	"qiji/src/service/message/ws/messageCenter"
 	"qiji/src/shared/id"
 	"qiji/src/util"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -35,14 +34,27 @@ func (s *Service) StreamMessage(srv messagepb.MessageService_StreamMessageServer
 	}
 }
 
-func (s *Service) GetMessageList(c context.Context, req *messagepb.GetMessageListSerivce_Request) (*messagepb.GetMessageListSerivce_Response, error) {
-	// err := s.Mysql.CreateGroup()
-	// if err != nil {
-	// 	return nil, err
-	// }
+func (s *Service) GetMessageList(c context.Context, req *messagepb.GetMessageListService_Request) (*messagepb.GetMessageListService_Response, error) {
+	res, err := s.Mysql.GetMessageList(req)
+	if err != nil {
+		return nil, err
+	}
 
-	return &messagepb.GetMessageListSerivce_Response{
-		MessageList: []*messagepb.Message{{}},
+	return res, nil
+}
+
+func (s *Service) GetSession(c context.Context, req *messagepb.GetSessionRequest) (*messagepb.GetSessionResponse, error) {
+	group, err := s.Mysql.GetGroup(req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &messagepb.GetSessionResponse{
+		Session: &messagepb.GetSessionListService_SessionInfo{
+			Id:          int32(group.ID),
+			Name:        group.Name,
+			SessionType: messagepb.SessionType_group,
+		},
 	}, nil
 }
 
@@ -113,25 +125,21 @@ func (s *Service) SendMessage(srv messagepb.MessageService_SendMessageServer) er
 		recv, err := srv.Recv()
 
 		if err != nil {
+			fmt.Printf("stream消息接受失败：%v \n", err)
 			return err
 		}
 
-		err = s.MessageCenter.Publish(context.Background(), sessionId, &messagepb.Message{
-			Content:        recv.Content,
-			SenderId:       recv.SenderId,
-			SendTimeSecond: int32(time.Now().Unix()),
-		})
+		msg, err := s.Mysql.WriteMessage(recv)
 		if err != nil {
-			fmt.Printf("推送消息失败 %v \n", err)
+			fmt.Printf("消息写入失败：%v \n", err)
+			return err
 		}
 
-		// fmt.Println("Received message:", recv.Content)
-		// if err := srv.Send(&messagepb.Message{
-		// 	Content:        recv.Content,
-		// 	SenderId:       1,
-		// 	SendTimeSecond: int32(time.Now().Unix()),
-		// }); err != nil {
-		// 	return err
-		// }
+		err = s.MessageCenter.Publish(context.Background(), sessionId, msg)
+
+		if err != nil {
+			fmt.Printf("推送消息失败 %v \n", err)
+			return err
+		}
 	}
 }
