@@ -99,6 +99,10 @@ func (m *MessageCenter) Subscribe(c context.Context, sessionId id.SessionId) (ch
 	go func() {
 		for msg := range mqMsgs {
 			var message messagepb.Message
+			if len(msg.Body) == 0 {
+				fmt.Printf("rabbitmq msg is nil")
+				return
+			}
 			err := json.Unmarshal(msg.Body, &message)
 			if err != nil {
 				m.Logger.Error("转换失败 %v", zap.Error(err))

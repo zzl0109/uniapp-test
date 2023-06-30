@@ -95,6 +95,10 @@ func (s *Service) SendMessage(srv messagepb.MessageService_SendMessageServer) er
 	fmt.Printf("metadata %v \n", sessionId)
 
 	go func() {
+		if s.MessageCenter == nil {
+			fmt.Printf("消息中心为空 \n")
+			return
+		}
 		done := make(chan struct{})
 		msgs, cleanUp, err := s.MessageCenter.Subscribe(context.Background(), sessionId)
 		if err != nil {
@@ -122,6 +126,10 @@ func (s *Service) SendMessage(srv messagepb.MessageService_SendMessageServer) er
 	}()
 
 	for {
+		if s.MessageCenter == nil {
+			fmt.Printf("消息中心为空 \n")
+			return fmt.Errorf("消息中心为空")
+		}
 		recv, err := srv.Recv()
 
 		if err != nil {

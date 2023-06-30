@@ -70,6 +70,7 @@ func Handler(u *websocket.Upgrader, messageClient messagepb.MessageServiceClient
 				smr, err := ms.Recv()
 				if err != nil {
 					logger.Error("接收流式消息失败", zap.Error(err))
+					return
 				}
 
 				msgs <- smr

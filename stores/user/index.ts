@@ -11,7 +11,9 @@ export const useUserStore = defineStore(UserStoreId, {
 			UserService.GetUser().then((res) => {
 				// console.log(res, 'getUserInfo');
 				this.userInfo = res || {};
-			});
+			}).catch(err => {
+				console.error("未登录");
+			})
 		},
 	},
 });

@@ -32,8 +32,12 @@
 		Qiji
 	} from '../../service/request';
 	import {
-		UserService
-	} from '../../service/user';
+		mapActions
+	} from 'pinia';
+	import {
+		useUserStore
+	} from '../../stores/user';
+
 	export default {
 		data() {
 			return {
@@ -72,6 +76,7 @@
 				},
 			};
 		},
+
 		onReady() {
 			if (uni.getStorageSync(Qiji.TokenKey)) {
 				uni.redirectTo({
@@ -81,13 +86,6 @@
 
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules);
-			UserService.GetUser()
-				.then((res) => {
-					console.log(res, 'GetUser res');
-				})
-				.catch((err) => {
-					console.log(err, 'GetUser err');
-				});
 
 			// uni.connectSocket({
 			// 	url: `ws://localhost:9090/ws?id=123`
@@ -105,6 +103,7 @@
 			// })
 		},
 		methods: {
+			...mapActions(useUserStore, ['getUserInfo']),
 			/** 点击 */
 			onClick() {
 				formatNumber(e);
@@ -132,6 +131,7 @@
 							.then((res) => {
 								uni.$u.toast('登录成功');
 								uni.setStorageSync(Qiji.TokenKey, res?.token);
+								this.getUserInfo();
 								// todo 跳转到会话列表
 								uni.redirectTo({
 									url: routing.sessionList(),

@@ -24,9 +24,7 @@
 	import {
 		Qiji
 	} from '../../service/request';
-	import {
-		UserService
-	} from '../../service/user';
+
 	export default {
 		data() {
 			return {

@@ -148,7 +148,11 @@
 			},
 
 			handleReceiveMessage(m) {
+
 				console.log(m, 'handleReceiveMessage');
+				if (!m) {
+					return;
+				}
 				try {
 					const msg = {
 						...m
