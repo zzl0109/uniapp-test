@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qiji-gateway-deployment-test
+  labels:
+    app: qiji-gateway-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qiji-gateway-test
+  template:
+    metadata:
+      labels:
+        app: qiji-gateway-test
+    spec:
+      containers:
+      - name: qiji-gateway-test
+        image: zhangzhulei/qiji-gateway-test
+        args: [
+          "--http_addr", ":80",
+          "--auth_addr", "10.43.25.192:80",
+          "--user_addr", "10.43.200.226:80",
+          "--msg_addr", "10.43.7.164:80",
+        ]
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+---
+apiVersion: v1  
+kind: Service  
+metadata:  
+  name: service-qiji-gateway-test
+spec:  
+  selector:  
+    app: qiji-gateway-test
+  type: NodePort
+  ports:  
+  - protocol: TCP  
+    port: 80  
+    targetPort: 80
+    nodePort: 31000
+    

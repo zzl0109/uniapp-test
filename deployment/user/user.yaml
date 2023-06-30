@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qiji-user-deployment-test
+  labels:
+    app: qiji-user-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qiji-user-test
+  template:
+    metadata:
+      labels:
+        app: qiji-user-test
+    spec:
+      volumes:
+      - name: public-dir
+        hostPath:
+          # 确保文件所在目录成功创建。
+          path: /home/lighthouse/external_files/key
+          type: DirectoryOrCreate
+      - name: public
+        hostPath:
+          path: /home/lighthouse/external_files/key/public.key
+          type: FileOrCreate
+      containers:
+      - name: qiji-user-test
+        image: zhangzhulei/qiji-user-test
+        args: [
+          "--addr", ":80",
+          "--mysql_addr", "118.89.93.58:3306",
+          "--auth_public_key_file", "/var/local/key/public.key"
+        ]
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /var/local/key
+          name: public-dir
+        - mountPath: /var/local/key/public.key
+          name: public
+---
+apiVersion: v1  
+kind: Service  
+metadata:  
+  name: service-qiji-user-test
+spec:  
+  selector:  
+    app: qiji-user-test
+  ports:  
+  - protocol: TCP  
+    port: 80  
+    targetPort: 80
+    name: default
+    

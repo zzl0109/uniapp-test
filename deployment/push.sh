@@ -1,0 +1,2 @@
+DOMAIN=$1
+VERSION=$2

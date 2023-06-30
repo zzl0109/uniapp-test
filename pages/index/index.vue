@@ -3,8 +3,8 @@
 		<!-- <u-input></u-input> -->
 		<!-- 注意，如果需要兼容微信小程序，最好通过setRules方法设置rules规则 -->
 		<u--form labelPosition="left" :model="model1" :rules="rules" ref="uForm">
-			<u-form-item label="姓名" prop="userInfo.name" borderBottom ref="item1">
-				<u--input v-model="model1.userInfo.name" border="none" placeholder="请输入姓名"></u--input>
+			<u-form-item label="昵称" prop="userInfo.name" borderBottom ref="item1">
+				<u--input v-model="model1.userInfo.name" border="none" placeholder="请输入昵称"></u--input>
 			</u-form-item>
 
 			<u-form-item label="性别" prop="userInfo.sex" @click="showSex = true" borderBottom>
@@ -63,7 +63,7 @@
 					'userInfo.name': {
 						type: 'string',
 						required: true,
-						message: '请填写姓名',
+						message: '请填写昵称',
 						trigger: ['blur', 'change'],
 					},
 					'userInfo.sex': {

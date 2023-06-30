@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qiji-auth-deployment-test
+  labels:
+    app: qiji-auth-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qiji-auth-test
+  template:
+    metadata:
+      labels:
+        app: qiji-auth-test
+    spec:
+      volumes:
+      - name: private-dir
+        hostPath:
+          # 确保文件所在目录成功创建。
+          path: /home/lighthouse/external_files/key
+          type: DirectoryOrCreate
+      - name: private
+        hostPath:
+          path: /home/lighthouse/external_files/key/private.key
+          type: FileOrCreate
+      containers:
+      - name: qiji-auth-test
+        image: zhangzhulei/qiji-auth-test
+        args: [
+          "--addr", ":80",
+          "--private_key_file", "/var/local/key/private.key",
+          "--mysql_addr", "118.89.93.58:3306"
+        ]
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /var/local/key
+          name: private-dir
+        - mountPath: /var/local/key/private.key
+          name: private
+---
+apiVersion: v1  
+kind: Service  
+metadata:  
+  name: service-qiji-auth-test
+spec:  
+  selector:  
+    app: qiji-auth-test
+  # type: NodePort
+  ports:  
+  - protocol: TCP  
+    port: 80  
+    targetPort: 80
+    # nodePort: 32001
+    

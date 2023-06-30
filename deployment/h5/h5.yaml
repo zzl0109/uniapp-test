@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qiji-h5-deployment-test
+  labels:
+    app: qiji-h5-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qiji-h5-test
+  template:
+    metadata:
+      labels:
+        app: qiji-h5-test
+    spec:
+      containers:
+      - name: qiji-h5-test
+        image: zhangzhulei/qiji-h5-test
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qiji-h5-service-test
+spec:
+  selector:
+    app: qiji-h5-test
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30008
+

@@ -6,9 +6,10 @@ export namespace Qiji {
 		responseMarshaller : (r : object) => Response
 	}
 
-	// export const serverAddr = "http://118.89.93.58:32000";
-	export const serverAddr = "http://localhost:8888";
-	export const wsAddr = "ws://localhost:9090";
+	export const serverAddr = "http://118.89.93.58:31000";
+	export const wsAddr = "ws://118.89.93.58:31001";
+	// export const serverAddr = "http://localhost:8888";
+	// export const wsAddr = "ws://localhost:9090";
 	export const AuthErr = "AUTH_ERR";
 	export const TokenKey = "token";
 
