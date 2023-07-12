@@ -1,0 +1,3 @@
+2023-07-12T18:43:12.121+0800	INFO	gateway/main.go:150	http服务已启动	{"addr": ":8888"}
+2023-07-12T18:46:03.598+0800	INFO	gateway/main.go:150	http服务已启动	{"addr": ":8888"}
+2023-07-12T18:46:13.961+0800	INFO	gateway/main.go:150	http服务已启动	{"addr": ":8888"}
