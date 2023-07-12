@@ -6,6 +6,7 @@ import (
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	_ "google.golang.org/grpc/encoding/gzip"
 )
 
 type GrpcConfig struct {
